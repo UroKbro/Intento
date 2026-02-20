@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  min-height: 100dvh;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(0.98); }
+}
+
+.burnout-pulse {
+  animation: pulse-soft 3s infinite;
+}
+
+.glass-morphism {
+  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md;
+}

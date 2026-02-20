@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Detailed Goal Execution View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0a0f16",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                -webkit-tap-highlight-color: transparent;
+                user-select: none;
+                min-height: 100dvh;
+            }
+        }
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .heatmap-cell {
+            aspect-ratio: 1/1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<header class="sticky top-0 z-40 bg-background-light/80 dark:bg-background-dark/80 ios-blur px-5 py-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-800">
+<button class="p-2 -ml-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors">
+<span class="material-icons text-2xl">chevron_left</span>
+</button>
+<h1 class="text-lg font-semibold tracking-tight">Master Mobile UI Design</h1>
+<button class="p-2 -mr-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-2xl">ios_share</span>
+</button>
+</header>
+<main class="max-w-md mx-auto px-5 pt-6 pb-32">
+<div class="mb-8">
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2.5 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full">Primary Objective</span>
+<span class="flex items-center gap-1 text-amber-500 text-[10px] font-bold uppercase tracking-widest bg-amber-500/10 px-2.5 py-1 rounded-full">
+<span class="material-icons text-[12px]">local_fire_department</span> 12 Day Streak
+            </span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-3xl font-black text-slate-900 dark:text-white">64<span class="text-lg text-slate-400 font-medium">%</span></span>
+<p class="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Overall Completion</p>
+</div>
+<div class="text-right">
+<span class="text-lg font-bold text-slate-900 dark:text-white">32.5h</span>
+<p class="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">of 50h Target</p>
+</div>
+</div>
+<div class="h-2.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 64%"></div>
+</div>
+</div>
+</div>
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Task Contribution</h3>
+<span class="text-[10px] text-slate-400 font-medium">4 Tasks Logged</span>
+</div>
+<div class="bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="divide-y divide-slate-100 dark:divide-slate-800">
+<div class="p-4 flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-emerald-500">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1.5">
+<h4 class="text-sm font-semibold text-slate-400 line-through truncate">Research Design Systems</h4>
+<span class="text-xs font-bold text-slate-900 dark:text-white ml-2">12.5h</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full rounded-full" style="width: 100%"></div>
+</div>
+</div>
+</div>
+<div class="p-4 flex items-center gap-4 bg-primary/5">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">pending</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1.5">
+<h4 class="text-sm font-semibold text-slate-900 dark:text-white truncate">Practice Auto-Layout</h4>
+<span class="text-xs font-bold text-primary ml-2">10.2h</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 68%"></div>
+</div>
+</div>
+</div>
+<div class="p-4 flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-slate-400">schedule</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1.5">
+<h4 class="text-sm font-semibold text-slate-500 truncate">Prototyping Transitions</h4>
+<span class="text-xs font-bold text-slate-400 ml-2">1.8h</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-slate-300 dark:bg-slate-700 h-full rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Focus Intensity Heatmap</h3>
+<span class="text-[10px] text-primary font-bold">Peak: 9:00 AM</span>
+</div>
+<div class="bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+<div class="grid grid-cols-8 gap-1.5">
+<div class="text-[8px] font-bold text-slate-400 flex items-end pb-1 uppercase">Time</div>
+<div class="text-[8px] font-bold text-slate-400 text-center uppercase">M</div>
+<div class="text-[8px] font-bold text-slate-400 text-center uppercase">T</div>
+<div class="text-[8px] font-bold text-primary text-center uppercase">W</div>
+<div class="text-[8px] font-bold text-slate-400 text-center uppercase">T</div>
+<div class="text-[8px] font-bold text-slate-400 text-center uppercase">F</div>
+<div class="text-[8px] font-bold text-slate-400 text-center uppercase">S</div>
+<div class="text-[8px] font-bold text-slate-400 text-center uppercase">S</div>
+<div class="text-[9px] font-medium text-slate-400 self-center">08:00</div>
+<div class="heatmap-cell bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+<div class="heatmap-cell bg-primary/20 rounded-md"></div>
+<div class="heatmap-cell bg-primary/60 rounded-md"></div>
+<div class="heatmap-cell bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+<div class="heatmap-cell bg-primary/40 rounded-md"></div>
+<div class="heatmap-cell bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+<div class="heatmap-cell bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+<div class="text-[9px] font-medium text-primary self-center">09:00</div>
+<div class="heatmap-cell bg-primary/40 rounded-md"></div>
+<div class="heatmap-cell bg-primary/80 rounded-md"></div>
+<div class="heatmap-cell bg-primary rounded-md ring-2 ring-primary/20 ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></div>
+<div class="heatmap-cell bg-primary/60 rounded-md"></div>
+<div class="heatmap-cell bg-primary/40 rounded-md"></div>
+<div class="heatmap-cell bg-primary/20 rounded-md"></div>
+<div class="heatmap-cell bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+<div class="text-[9px] font-medium text-slate-400 self-center">10:00</div>
+<div class="heatmap-cell bg-primary/20 rounded-md"></div>
+<div class="heatmap-cell bg-primary/40 rounded-md"></div>
+<div class="heatmap-cell bg-primary/20 rounded-md"></div>
+<div class="heatmap-cell bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+<div class="heatmap-cell bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+<div class="heatmap-cell bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+<div class="heatmap-cell bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+</div>
+<div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<span class="text-[10px] font-bold text-slate-400 uppercase">Intensity Key</span>
+<div class="flex gap-1.5 items-center">
+<span class="text-[9px] text-slate-400">Low</span>
+<div class="flex gap-1">
+<div class="w-3 h-3 rounded-sm bg-slate-100 dark:bg-slate-800"></div>
+<div class="w-3 h-3 rounded-sm bg-primary/30"></div>
+<div class="w-3 h-3 rounded-sm bg-primary/60"></div>
+<div class="w-3 h-3 rounded-sm bg-primary"></div>
+</div>
+<span class="text-[9px] text-slate-400">High</span>
+</div>
+</div>
+</div>
+</section>
+<section class="mb-8">
+<h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Milestone Forecasting</h3>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-indigo-500/5 border border-indigo-500/20 p-4 rounded-2xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-indigo-500 text-lg">event_available</span>
+<span class="text-[10px] font-bold text-indigo-500 uppercase tracking-tighter">Est. Completion</span>
+</div>
+<div class="text-xl font-black text-slate-900 dark:text-white">Oct 12</div>
+<p class="text-[9px] font-bold text-slate-500 uppercase mt-1">Based on current pace</p>
+</div>
+<div class="bg-amber-500/5 border border-amber-500/20 p-4 rounded-2xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-amber-500 text-lg">trending_up</span>
+<span class="text-[10px] font-bold text-amber-500 uppercase tracking-tighter">Next Milestone</span>
+</div>
+<div class="text-xl font-black text-slate-900 dark:text-white">7.5h <span class="text-xs font-normal text-slate-400">Left</span></div>
+<p class="text-[9px] font-bold text-slate-500 uppercase mt-1">Prototyping Mastery</p>
+</div>
+</div>
+</section>
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Linked Habit Stacks</h3>
+<button class="text-[10px] font-bold text-primary uppercase">Edit Stacks</button>
+</div>
+<div class="space-y-3">
+<div class="bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<div class="w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center text-orange-500">
+<span class="material-symbols-outlined">coffee</span>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold">Morning UI Review</h4>
+<p class="text-[11px] text-slate-500">After Morning Coffee → 15m Dribbble Inspo</p>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-black text-orange-500">85%</span>
+<span class="text-[8px] font-bold text-slate-400 uppercase">Match</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<div class="w-12 h-12 bg-violet-500/10 rounded-full flex items-center justify-center text-violet-500">
+<span class="material-symbols-outlined">nightlight</span>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold">Daily retrospective</h4>
+<p class="text-[11px] text-slate-500">Before Bed → 5m Log Learning Outcomes</p>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-black text-violet-500">100%</span>
+<span class="text-[8px] font-bold text-slate-400 uppercase">Match</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<div class="fixed bottom-20 left-0 right-0 p-5 pointer-events-none z-30">
+<div class="max-w-md mx-auto flex items-center gap-3 pointer-events-auto">
+<button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-extrabold py-5 rounded-2xl shadow-2xl flex items-center justify-center gap-3 active:scale-[0.98] transition-transform">
+<span class="material-icons">play_arrow</span>
+            RESUME SESSION
+        </button>
+</div>
+</div>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-background-dark/80 ios-blur border-t border-slate-200 dark:border-slate-800 h-20 pt-2 pb-6 flex items-center justify-around z-50">
+<button class="flex flex-col items-center gap-1 text-slate-400 active:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 active:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">calendar_month</span>
+<span class="text-[10px] font-bold">Planner</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 active:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">check_circle</span>
+<span class="text-[10px] font-bold">Tasks</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1">emoji_events</span>
+<span class="text-[10px] font-bold">Goals</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 active:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">bar_chart</span>
+<span class="text-[10px] font-bold">Stats</span>
+</button>
+</nav>
+
+</body></html>

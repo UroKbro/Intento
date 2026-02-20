@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Advanced Insights &amp; Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0a0f16",
+                        "card-dark": "#161f2c",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen">
+<div class="h-12 w-full"></div>
+<main class="max-w-[430px] mx-auto px-5 pb-32">
+<header class="mb-6 space-y-4">
+<div class="flex justify-between items-center">
+<h1 class="text-2xl font-bold tracking-tight">Insights</h1>
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-semibold">
+<span class="material-symbols-outlined text-sm">file_download</span>
+                Export Report
+            </button>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full bg-white dark:bg-card-dark border-none rounded-2xl py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-500" placeholder="Search tasks, notes, or focus sessions..." type="text"/>
+</div>
+</header>
+<section class="mb-8">
+<h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Lifetime Statistics</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white dark:bg-card-dark p-4 rounded-2xl border border-slate-100 dark:border-slate-800/50 shadow-sm">
+<div class="flex items-center gap-2 mb-2 text-primary">
+<span class="material-symbols-outlined text-xl">timer</span>
+</div>
+<div class="text-2xl font-bold">1,284h</div>
+<div class="text-[10px] text-slate-500 font-medium uppercase tracking-tight">Total Hours Invested</div>
+</div>
+<div class="bg-white dark:bg-card-dark p-4 rounded-2xl border border-slate-100 dark:border-slate-800/50 shadow-sm">
+<div class="flex items-center gap-2 mb-2 text-emerald-500">
+<span class="material-symbols-outlined text-xl">bolt</span>
+</div>
+<div class="text-2xl font-bold">87%</div>
+<div class="text-[10px] text-slate-500 font-medium uppercase tracking-tight">Avg. Intentionality</div>
+</div>
+</div>
+</section>
+<section class="mb-8">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Productivity Heatmap</h2>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-sm bg-primary/10"></div>
+<div class="w-2 h-2 rounded-sm bg-primary/40"></div>
+<div class="w-2 h-2 rounded-sm bg-primary/70"></div>
+<div class="w-2 h-2 rounded-sm bg-primary"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark p-4 rounded-2xl border border-slate-100 dark:border-slate-800/50">
+<div class="flex flex-col gap-2">
+<div class="flex gap-1.5 justify-between">
+<div class="w-full aspect-square bg-primary/20 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/40 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/10 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/60 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/90 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/30 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/20 rounded-[4px]"></div>
+</div>
+<div class="flex gap-1.5 justify-between">
+<div class="w-full aspect-square bg-primary/10 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/20 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/80 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/40 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/10 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/20 rounded-[4px]"></div>
+</div>
+<div class="flex gap-1.5 justify-between">
+<div class="w-full aspect-square bg-primary/40 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/60 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/20 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/10 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/40 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/70 rounded-[4px]"></div>
+<div class="w-full aspect-square bg-primary/50 rounded-[4px]"></div>
+</div>
+</div>
+<div class="flex justify-between mt-3 px-1">
+<span class="text-[9px] text-slate-400 font-bold">MON</span>
+<span class="text-[9px] text-slate-400 font-bold">WED</span>
+<span class="text-[9px] text-slate-400 font-bold">FRI</span>
+<span class="text-[9px] text-slate-400 font-bold">SUN</span>
+</div>
+</div>
+</section>
+<section class="mb-8">
+<h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Energy Patterns</h2>
+<div class="bg-white dark:bg-card-dark p-5 rounded-2xl border border-slate-100 dark:border-slate-800/50">
+<div class="relative h-24 flex items-end justify-between gap-2 px-1">
+<div class="flex-1 bg-slate-100 dark:bg-slate-800/50 h-[30%] rounded-t-lg"></div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800/50 h-[45%] rounded-t-lg"></div>
+<div class="flex-1 bg-primary/40 h-[80%] rounded-t-lg"></div>
+<div class="flex-1 bg-primary h-[100%] rounded-t-lg relative">
+<div class="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full ring-4 ring-primary/20"></div>
+</div>
+<div class="flex-1 bg-primary/60 h-[70%] rounded-t-lg"></div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800/50 h-[35%] rounded-t-lg"></div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800/50 h-[25%] rounded-t-lg"></div>
+<div class="flex-1 bg-amber-400/40 h-[50%] rounded-t-lg"></div>
+<div class="flex-1 bg-amber-400 h-[65%] rounded-t-lg"></div>
+</div>
+<div class="flex justify-between mt-3 text-[10px] text-slate-500 font-medium">
+<span>6 AM</span>
+<span>10 AM</span>
+<span>2 PM</span>
+<span>6 PM</span>
+<span>10 PM</span>
+</div>
+<div class="mt-5 p-3 bg-slate-50 dark:bg-slate-800/30 rounded-xl flex items-start gap-3 border border-slate-100 dark:border-slate-800">
+<span class="material-symbols-outlined text-primary text-xl">lightbulb</span>
+<p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                    Your deep work efficiency is <span class="text-slate-900 dark:text-slate-200 font-bold">24% higher</span> during your morning peak at 10:00 AM.
+                </p>
+</div>
+</div>
+</section>
+<section class="rounded-2xl overflow-hidden relative h-32 mb-4">
+<img alt="Data analysis background" class="w-full h-full object-cover brightness-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfJLm24IUxSlTQWT7DopTyxrSSsqnddesyOY6r1Q8ckZXOvE83GQh79fo-VXjfL_QRLw0pGVrXDDrusyDF0WAbirDGESiAlhCYihdI0H2_NruG52sCVc9b2l2HxkdBHa2K1fe_98s3to9Rqy4PpZLYa68eMLFrEg62f_F5hMBuskuKc1u7ztiK7ao4Uxw4lfcaO2Ofp3PyaJay0oeHy_bsrG9MgllDF0xr_SulaLcXqjV8Cj6lXNzscB_PKREHvgXgvTDSOXDCqBQ"/>
+<div class="absolute inset-0 bg-gradient-to-r from-primary/40 to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<p class="text-[10px] font-bold text-white/80 tracking-widest uppercase">Weekly Recap</p>
+<p class="text-sm font-semibold text-white">Your focus grew by 12% this week.</p>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 max-w-[430px] mx-auto bg-white/80 dark:bg-card-dark/80 ios-blur border-t border-slate-200 dark:border-slate-800/80 pb-8 pt-3 px-2 z-50">
+<div class="flex justify-around items-center">
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[26px]">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[26px]">calendar_today</span>
+<span class="text-[10px] font-medium">Planner</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[26px]">task_alt</span>
+<span class="text-[10px] font-medium">Tasks</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[26px]">flag</span>
+<span class="text-[10px] font-medium">Goals</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[26px] fill-1">monitoring</span>
+<span class="text-[10px] font-bold">Stats</span>
+</div>
+</div>
+</nav>
+
+</body></html>

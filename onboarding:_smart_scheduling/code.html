@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Onboarding: Smart Scheduling</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101822",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: contain;
+        }
+        .ios-safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .ios-safe-top {
+            padding-top: env(safe-area-inset-top);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col overflow-hidden">
+<!-- Status Bar Spacer (iOS) -->
+<div class="ios-safe-top h-12"></div>
+<!-- Header Navigation -->
+<header class="px-6 py-4 flex justify-between items-center">
+<button class="text-slate-400 dark:text-slate-500 hover:text-primary transition-colors">
+<span class="material-icons">chevron_left</span>
+</button>
+<button class="text-sm font-medium text-slate-400 dark:text-slate-500 hover:text-primary">
+            Skip
+        </button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col px-8 justify-center items-center">
+<!-- Simplified AI Calendar Graphic -->
+<div class="w-full max-w-sm aspect-[4/5] relative mb-12">
+<!-- Calendar Grid Container -->
+<div class="absolute inset-0 glass-card rounded-xl p-4 flex flex-col">
+<!-- Days Header -->
+<div class="flex justify-between mb-6 opacity-40 text-[10px] font-bold tracking-widest uppercase">
+<span>Mon</span>
+<span>Tue</span>
+<span>Wed</span>
+<span>Thu</span>
+<span>Fri</span>
+</div>
+<!-- Time Slots & Blocks -->
+<div class="flex-1 relative border-l border-slate-700/30 ml-2">
+<!-- Grid Lines -->
+<div class="absolute w-full h-px bg-slate-700/20 top-1/4"></div>
+<div class="absolute w-full h-px bg-slate-700/20 top-2/4"></div>
+<div class="absolute w-full h-px bg-slate-700/20 top-3/4"></div>
+<!-- Recurring Block -->
+<div class="absolute top-[10%] left-4 right-8 h-12 bg-slate-400/10 rounded-lg border border-slate-500/20 flex items-center px-3 gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-slate-500/40"></div>
+<div class="h-2 w-20 bg-slate-500/20 rounded"></div>
+</div>
+<!-- AI Suggested Block (The Highlight) -->
+<div class="absolute top-[45%] left-4 right-4 h-24 bg-primary/10 border-2 border-primary/40 rounded-xl shadow-[0_0_20px_rgba(19,109,236,0.15)] overflow-hidden">
+<div class="p-3">
+<div class="flex items-center gap-1.5 mb-2">
+<span class="material-icons text-primary text-sm">auto_awesome</span>
+<span class="text-[10px] font-bold text-primary uppercase tracking-tighter">Best Focus Time</span>
+</div>
+<div class="h-3 w-32 bg-primary rounded-full mb-1"></div>
+<div class="h-2 w-20 bg-primary/30 rounded-full"></div>
+</div>
+<!-- Pulse Effect Decoration -->
+<div class="absolute bottom-0 right-0 p-2">
+<div class="w-12 h-12 bg-primary/20 rounded-full blur-xl"></div>
+</div>
+</div>
+<!-- Small energy indicator -->
+<div class="absolute right-[-10px] top-[50%] flex flex-col items-center gap-1">
+<div class="w-1 h-12 bg-gradient-to-b from-transparent via-primary to-transparent opacity-50"></div>
+<span class="material-icons text-primary text-xs">bolt</span>
+</div>
+<!-- Another Block -->
+<div class="absolute bottom-[10%] left-4 right-12 h-10 bg-slate-400/5 rounded-lg border border-slate-500/10 flex items-center px-3 gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-slate-500/20"></div>
+<div class="h-2 w-16 bg-slate-500/10 rounded"></div>
+</div>
+</div>
+</div>
+<!-- Floating Decorative Element -->
+<div class="absolute -top-4 -right-4 w-20 h-20 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-8 -left-8 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+<!-- Text Content -->
+<div class="text-center space-y-4">
+<h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+                Smart Planning &amp; AI
+            </h1>
+<p class="text-slate-500 dark:text-slate-400 leading-relaxed max-w-[280px] mx-auto">
+                Our AI analyzes your energy cycles to suggest the perfect slots for deep work, keeping your habits in sync.
+            </p>
+</div>
+</main>
+<!-- Footer Navigation -->
+<footer class="px-8 pt-8 ios-safe-bottom">
+<!-- Progress Dots -->
+<div class="flex justify-center gap-2.5 mb-10">
+<div class="w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+<div class="w-6 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+<div class="w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+</div>
+<!-- CTA Button -->
+<div class="pb-10">
+<button class="w-full bg-primary hover:bg-blue-600 text-white font-semibold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+                Continue
+            </button>
+</div>
+</footer>
+<!-- Image for Context (not rendered, just for data-alt requirements) -->
+<div class="hidden">
+<img data-alt="Abstract blue energy pattern with geometric shapes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjIcBm1yFTWCBq4Ndyb-FhAljj0F-VV1FvMuVvNnuT2JSFYIEIl6NgpDkH3cBaSQE5csleSbBlgX4paKk5byEdoNnW8D0VBfGI0QCkLUW9UeB8AOX5jf2x2b7jI8OJqmY4fdJp7IlI_MIM8qo2jgzcKFKK_qVdHoMmDu4F0JTqdP2X1sspUmM9TiUlh_8-_oGhOMXjLtoSYS3NqsLDZWPreK9xbIDb4zPz_39cU18Lamy78dx2z7-YxSxJAN84_GAyJtzcph7Wib4"/>
+<img data-location="San Francisco" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJh0_Of5XfEePZhE6uukTldC0MYUG8kvu_JGhWAE8_f9gprHuZWaiHSI5HJTNLBR9it4nAhw-k5XLlEmFcrlvmvnZXs6etFqKUEaGTNOdN2G39KgpAhT9H1qMuc-XHOSbNCx95k5Y-SKWTUNfpOEn6zQBNP9clxc08t8dl__-siokVRwJq5rPKlMsyDNptLr3rOoknOeGgKCI7fcpcVtt-iSjlbyKTvS-BdMzQmXa8TNdR-sVMc0r8jSYYpxnKa8SIRmGHjN7toaw"/>
+</div>
+</body></html>

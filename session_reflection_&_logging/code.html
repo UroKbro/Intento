@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Holistic Session Reflection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "momentum": "#10b981",
+                        "warning": "#f59e0b",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0A0F16",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @keyframes softPulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.15; transform: scale(1.4); }
+        }
+        .pulse-glow {
+            animation: softPulse 3s ease-in-out infinite;
+        }
+        input[type='range'] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        input[type='range']::-webkit-slider-runnable-track {
+            background: #e2e8f0;
+            height: 6px;
+            border-radius: 3px;
+        }
+        .dark input[type='range']::-webkit-slider-runnable-track {
+            background: #1e293b;
+        }
+        input[type='range']::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            margin-top: -5px;
+            background-color: #136dec;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .ios-tab-bar {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex justify-center">
+<div class="w-full max-w-[400px] bg-white dark:bg-[#000000] min-h-screen relative flex flex-col shadow-2xl overflow-hidden">
+<div class="h-12 w-full flex justify-between items-center px-8 shrink-0">
+<span class="text-[15px] font-semibold">9:41</span>
+<div class="flex items-center space-x-1.5">
+<span class="material-icons-round text-[16px]">signal_cellular_alt</span>
+<span class="material-icons-round text-[16px]">wifi</span>
+<span class="material-icons-round text-[16px]">battery_full</span>
+</div>
+</div>
+<header class="flex justify-between items-center px-6 py-2">
+<button class="text-slate-400 dark:text-slate-500 hover:text-red-500 transition-colors">
+<span class="text-[17px]">Discard</span>
+</button>
+<h1 class="text-[17px] font-semibold">Session Reflection</h1>
+<button class="text-primary font-semibold text-[17px]">Save</button>
+</header>
+<main class="flex-1 overflow-y-auto px-6 pt-4 pb-32">
+<div class="flex flex-col items-center py-6">
+<div class="relative mb-4 flex items-center justify-center">
+<div class="absolute w-24 h-24 bg-momentum/20 rounded-full pulse-glow"></div>
+<div class="relative w-16 h-16 bg-momentum/10 border border-momentum/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-momentum text-3xl">moving</span>
+</div>
+</div>
+<p class="text-momentum font-bold text-sm tracking-wide uppercase">Goal Momentum</p>
+<h2 class="text-2xl font-bold mt-1 tracking-tight">Kept moving today</h2>
+</div>
+<div class="bg-slate-50 dark:bg-slate-900/40 rounded-2xl p-5 mb-6 border border-slate-100 dark:border-slate-800">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-[11px] uppercase tracking-widest font-bold text-slate-400 mb-1">Time Allocation</h3>
+<p class="text-sm font-semibold">Mobile App Design System</p>
+</div>
+<div class="bg-primary/10 px-2 py-1 rounded text-primary font-bold text-xs">
+                        +45m Session
+                    </div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold uppercase text-slate-400">Actual</span>
+<span class="text-lg font-bold">6h 30m</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] font-bold uppercase text-slate-400">Goal</span>
+<span class="text-lg font-bold text-slate-500">8h 00m</span>
+</div>
+</div>
+<div class="relative h-2.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="absolute inset-y-0 left-0 bg-primary rounded-full w-[82%] shadow-[0_0_12px_rgba(19,109,236,0.3)] transition-all"></div>
+</div>
+<p class="text-[11px] text-slate-500 text-center italic">82% of planned allocation achieved</p>
+</div>
+</div>
+<div class="mb-8">
+<h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 px-1">Distraction Summary</h3>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 mb-2 text-warning">
+<span class="material-symbols-outlined text-lg">smartphone</span>
+<span class="text-[11px] font-bold uppercase">Digital</span>
+</div>
+<p class="text-xl font-bold">12m</p>
+<p class="text-[10px] text-slate-500">Social &amp; Notifications</p>
+</div>
+<div class="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 mb-2 text-primary">
+<span class="material-symbols-outlined text-lg">coffee</span>
+<span class="text-[11px] font-bold uppercase">Internal</span>
+</div>
+<p class="text-xl font-bold">8m</p>
+<p class="text-[10px] text-slate-500">Breaks &amp; Daydreaming</p>
+</div>
+</div>
+</div>
+<div class="mb-8">
+<h3 class="text-sm font-semibold mb-4">How was your mood?</h3>
+<div class="flex justify-between bg-slate-100/50 dark:bg-slate-900/30 p-2 rounded-2xl">
+<button class="flex-1 flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 transition-all">
+<span class="text-2xl">😔</span>
+<span class="text-[10px] font-bold text-slate-500 uppercase">Low</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 transition-all">
+<span class="text-2xl">😐</span>
+<span class="text-[10px] font-bold text-slate-500 uppercase">Flat</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1.5 p-3 rounded-xl bg-white dark:bg-slate-800 shadow-sm transition-all border border-slate-200 dark:border-slate-700">
+<span class="text-2xl">😊</span>
+<span class="text-[10px] font-bold text-primary uppercase">Good</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 transition-all">
+<span class="text-2xl">🤩</span>
+<span class="text-[10px] font-bold text-slate-500 uppercase">High</span>
+</button>
+</div>
+</div>
+<div class="mb-10">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-sm font-semibold">Energy Level</h3>
+<span class="text-xs font-bold text-momentum px-2 py-0.5 bg-momentum/10 rounded-md">Balanced</span>
+</div>
+<div class="px-2">
+<input class="w-full" max="100" min="0" type="range" value="65"/>
+<div class="flex justify-between mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+<span>Depleted</span>
+<span>Sprinting</span>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h3 class="text-sm font-semibold mb-3">Reflections</h3>
+<textarea class="w-full h-28 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-slate-500" placeholder="What helped or hindered your intentionality?"></textarea>
+</div>
+</main>
+<nav class="absolute bottom-0 left-0 right-0 ios-tab-bar bg-white/80 dark:bg-black/80 border-t border-slate-200 dark:border-slate-800 pb-8 pt-2 px-4">
+<div class="flex justify-between items-center">
+<button class="flex flex-col items-center gap-1 flex-1">
+<span class="material-symbols-outlined text-[24px] text-slate-400">home</span>
+<span class="text-[10px] font-medium text-slate-400">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 flex-1">
+<span class="material-symbols-outlined text-[24px] text-slate-400">calendar_today</span>
+<span class="text-[10px] font-medium text-slate-400">Planner</span>
+</button>
+<button class="flex flex-col items-center gap-1 flex-1">
+<span class="material-symbols-outlined text-[24px] text-slate-400">check_circle</span>
+<span class="text-[10px] font-medium text-slate-400">Tasks</span>
+</button>
+<button class="flex flex-col items-center gap-1 flex-1">
+<span class="material-symbols-outlined text-[24px] text-primary" style="font-variation-settings: 'FILL' 1">stars</span>
+<span class="text-[10px] font-medium text-primary">Goals</span>
+</button>
+<button class="flex flex-col items-center gap-1 flex-1">
+<span class="material-symbols-outlined text-[24px] text-slate-400">bar_chart</span>
+<span class="text-[10px] font-medium text-slate-400">Stats</span>
+</button>
+</div>
+<div class="flex justify-center mt-4">
+<div class="w-32 h-1 bg-slate-800 dark:bg-slate-300 rounded-full opacity-20"></div>
+</div>
+</nav>
+</div>
+
+</body></html>

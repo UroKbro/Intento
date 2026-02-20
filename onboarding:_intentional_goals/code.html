@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onboarding - Intentional Goals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101822",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased h-screen overflow-hidden">
+<!-- Mobile Screen Wrapper (iOS Safe Area Simulation) -->
+<div class="max-w-[430px] mx-auto h-screen bg-background-light dark:bg-background-dark relative flex flex-col px-6">
+<!-- Top Navigation -->
+<nav class="pt-14 pb-4 flex justify-end">
+<button class="text-sm font-medium text-slate-400 hover:text-primary transition-colors">
+                Skip
+            </button>
+</nav>
+<!-- Illustration Area -->
+<div class="flex-1 flex flex-col items-center justify-center space-y-12">
+<div class="relative w-full max-w-[320px] aspect-square flex items-center justify-center">
+<!-- Abstract Focus Illustration using Theme Shapes -->
+<div class="absolute inset-0 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="relative z-10 w-full h-full flex items-center justify-center">
+<img alt="Person focused on long term vision" class="w-full h-full object-cover rounded-3xl mix-blend-luminosity opacity-80 border-2 border-primary/20" data-alt="A focused person sitting in a minimal room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEYULds8N8NXfc30LqJ55r2Vg0Sz-bX_pqhcCrNdUd8_aR8eRRXGZgDBcMQ7uoaeJeJWBOxkvinCHWDxKG9K76bkypxJw7R6K7k5aB3pu4SyMdBS-0woDMrmjAiIRMJsGPE39hZhL2K3y0i4C7xrCS2OH5NPyjDuOq4k78Ybu823qsQj9HMccttP6kB9S48q1VQ-JHcaBHg58Ltu-7NTf8dxUMLiibxxiTdGgeUtj8MfxtGhu2V5UXO8RTwQ9ktqHMWbBik-ouo_k"/>
+<!-- Floating UI elements to represent tasks -->
+<div class="absolute -top-4 -right-4 bg-background-dark border border-primary/30 p-4 rounded-xl shadow-2xl">
+<span class="material-icons text-primary text-2xl">track_changes</span>
+</div>
+<div class="absolute -bottom-2 -left-2 bg-primary p-3 rounded-lg shadow-xl shadow-primary/40">
+<span class="material-icons text-white text-xl">verified</span>
+</div>
+</div>
+</div>
+<!-- Text Content -->
+<div class="text-center space-y-4">
+<h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+                    Focus on what matters.
+                </h1>
+<p class="text-base text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
+                    True productivity starts with <span class="text-primary font-medium">Why</span>. Create long-term goals and link them to your daily tasks to stay aligned with your purpose.
+                </p>
+</div>
+</div>
+<!-- Bottom Controls -->
+<div class="pb-12 pt-8 space-y-8">
+<!-- Progress Indicator -->
+<div class="flex justify-center items-center space-x-2">
+<div class="h-2 w-6 bg-primary rounded-full"></div>
+<div class="h-2 w-2 bg-primary/20 rounded-full"></div>
+<div class="h-2 w-2 bg-primary/20 rounded-full"></div>
+<div class="h-2 w-2 bg-primary/20 rounded-full"></div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-4 rounded-xl shadow-lg shadow-primary/20 flex items-center justify-center space-x-2 active:scale-[0.98] transition-all">
+<span>Continue</span>
+<span class="material-icons text-lg">arrow_forward</span>
+</button>
+</div>
+<!-- iOS Home Indicator Spacing -->
+<div class="h-2 w-32 bg-slate-300 dark:bg-slate-800 rounded-full mx-auto mb-2 opacity-50"></div>
+</div>
+<!-- Background Decorative Elements -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px]"></div>
+</div>
+</body></html>

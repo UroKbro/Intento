@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-Enhanced Weekly Planner</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0a0f16",
+                        "surface-dark": "#161f2c",
+                        "surface-light": "#ffffff",
+                        "accent-purple": "#8b5cf6",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Inter', sans-serif;
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .dashed-border {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23136dec66' stroke-width='2' stroke-dasharray='6%2c 6' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 12px;
+        }
+        .ai-glow {
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex justify-center">
+<div class="w-full max-w-[400px] bg-background-light dark:bg-background-dark min-h-screen flex flex-col relative overflow-hidden border-x border-slate-200 dark:border-slate-800">
+<div class="h-12 w-full flex justify-between items-center px-8 shrink-0">
+<span class="text-xs font-semibold">9:41</span>
+<div class="flex space-x-1.5 items-center">
+<span class="material-icons text-[14px]">signal_cellular_alt</span>
+<span class="material-icons text-[14px]">wifi</span>
+<span class="material-icons text-[14px]">battery_full</span>
+</div>
+</div>
+<header class="px-6 py-4 flex justify-between items-end">
+<div>
+<h1 class="text-2xl font-bold tracking-tight">Weekly Planner</h1>
+<p class="text-sm text-slate-500 dark:text-slate-400 font-medium">October 23 – 29</p>
+</div>
+<div class="flex space-x-2">
+<button class="w-10 h-10 rounded-full bg-slate-200 dark:bg-surface-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">auto_awesome</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-slate-200 dark:bg-surface-dark flex items-center justify-center">
+<span class="material-icons text-primary text-xl">calendar_month</span>
+</button>
+</div>
+</header>
+<div class="px-6 py-2 overflow-x-auto hide-scrollbar">
+<div class="flex space-x-4 min-w-max">
+<div class="flex flex-col items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Mon</span>
+<div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold bg-slate-200 dark:bg-surface-dark">23</div>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Tue</span>
+<div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold bg-slate-200 dark:bg-surface-dark">24</div>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[10px] font-bold uppercase tracking-wider text-primary mb-2">Wed</span>
+<div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold bg-primary text-white shadow-lg shadow-primary/30">25</div>
+</div>
+<div class="flex flex-col items-center text-slate-400">
+<span class="text-[10px] font-bold uppercase tracking-wider mb-2">Thu</span>
+<div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold bg-slate-200 dark:bg-surface-dark">26</div>
+</div>
+<div class="flex flex-col items-center text-slate-400">
+<span class="text-[10px] font-bold uppercase tracking-wider mb-2">Fri</span>
+<div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold bg-slate-200 dark:bg-surface-dark">27</div>
+</div>
+</div>
+</div>
+<main class="flex-1 overflow-y-auto px-6 pt-6 pb-40 hide-scrollbar relative">
+<div class="relative">
+<div class="absolute left-12 top-0 bottom-0 w-[1px] bg-slate-200 dark:bg-slate-800"></div>
+<div class="relative flex mb-8 opacity-60">
+<div class="w-12 text-[11px] font-bold text-slate-400 pt-1 text-right pr-3">08 AM</div>
+<div class="flex-1 p-4 rounded-xl bg-slate-100/50 dark:bg-surface-dark/50 dashed-border">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-sm font-semibold flex items-center">
+                                Morning Deep Work
+                                <span class="material-symbols-outlined text-[14px] ml-1 text-slate-400">repeat</span>
+</h3>
+<p class="text-[10px] font-bold text-green-500 mt-1 uppercase tracking-wider">2/2h Completed</p>
+</div>
+<span class="material-icons text-sm text-green-500">check_circle</span>
+</div>
+</div>
+</div>
+<div class="relative flex mb-8">
+<div class="absolute -left-1 top-[20px] flex items-center w-full z-10 pointer-events-none">
+<div class="w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<div class="flex-1 h-[2px] bg-primary/30 ml-1"></div>
+</div>
+<div class="w-12 text-[11px] font-bold text-primary pt-1 text-right pr-3">10 AM</div>
+<div class="flex-1 p-4 rounded-xl bg-primary/5 dark:bg-primary/10 dashed-border relative ring-1 ring-primary/40 shadow-xl shadow-primary/5">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-sm font-bold flex items-center">
+                                Strategic Planning
+                                <span class="material-symbols-outlined text-[14px] ml-1 text-primary">repeat</span>
+</h3>
+<div class="flex items-center mt-1 space-x-2">
+<span class="text-[10px] font-bold text-primary bg-primary/20 px-1.5 py-0.5 rounded tracking-wider">1.5/3h ACTUAL</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-lg">track_changes</span>
+</div>
+<div class="pt-4 border-t border-primary/20 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[11px] font-bold text-slate-700 dark:text-slate-300">Deep Focus Lock</span>
+<span class="text-[9px] text-slate-500">AI blocks all distractions</span>
+</div>
+<div class="relative inline-flex h-5 w-10 items-center rounded-full bg-primary">
+<span class="translate-x-5 inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform"></span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative flex mb-8">
+<div class="w-12 text-[11px] font-bold text-accent-purple pt-1 text-right pr-3">01 PM</div>
+<div class="flex-1 p-4 rounded-xl bg-accent-purple/5 border-2 border-dashed border-accent-purple/40 ai-glow">
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center space-x-1.5 mb-1">
+<span class="material-symbols-outlined text-[14px] text-accent-purple">bolt</span>
+<span class="text-[9px] font-bold text-accent-purple uppercase tracking-widest">High Energy Peak</span>
+</div>
+<h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Recommended: Complex Tasks</h3>
+<p class="text-[10px] text-slate-500 mt-1">Suggested slot based on your patterns</p>
+</div>
+<button class="bg-accent-purple text-white p-1 rounded-md">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="relative flex mb-8">
+<div class="w-12 text-[11px] font-bold text-slate-400 pt-1 text-right pr-3">03 PM</div>
+<div class="flex-1 p-4 rounded-xl bg-slate-100 dark:bg-surface-dark border-l-4 border-slate-300 dark:border-slate-700">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-sm font-semibold">Client Sync</h3>
+<p class="text-[10px] font-bold text-slate-400 mt-1 tracking-tighter uppercase">0/1h Planned</p>
+</div>
+<span class="inline-block px-2 py-0.5 rounded text-[9px] font-bold bg-slate-200 dark:bg-slate-700 text-slate-500">MEETING</span>
+</div>
+</div>
+</div>
+<div class="relative flex mb-8">
+<div class="w-12 text-[11px] font-bold text-slate-400 pt-1 text-right pr-3">05 PM</div>
+<div class="flex-1 p-4 rounded-xl bg-slate-100 dark:bg-surface-dark dashed-border opacity-80">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-sm font-semibold flex items-center">
+                                Learning &amp; Development
+                                <span class="material-symbols-outlined text-[14px] ml-1 text-slate-400">repeat</span>
+</h3>
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-tighter mt-1 block">Goal: Skill Up</span>
+</div>
+<span class="text-[11px] font-bold text-slate-400 bg-slate-200 dark:bg-slate-700/50 px-1.5 py-0.5 rounded">0/2h</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="absolute bottom-24 left-6 right-6 z-20 pointer-events-none">
+<div class="bg-white dark:bg-surface-dark rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 p-4 pointer-events-auto">
+<div class="flex items-center space-x-3 mb-3">
+<div class="w-8 h-8 rounded-full bg-accent-purple/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-accent-purple text-lg">psychology</span>
+</div>
+<div>
+<h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Slot Suggestion</h4>
+<p class="text-xs font-semibold leading-tight mt-1">Schedule 'Technical Debt' for 3 PM?</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="flex items-center justify-center py-2 rounded-lg bg-accent-purple/10 border border-accent-purple/20">
+<span class="text-[10px] font-bold text-accent-purple">Accept Slot</span>
+</button>
+<button class="flex items-center justify-center py-2 rounded-lg bg-slate-100 dark:bg-slate-800">
+<span class="text-[10px] font-bold text-slate-400">Later</span>
+</button>
+</div>
+</div>
+</div>
+<button class="absolute bottom-32 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg shadow-primary/40 flex items-center justify-center z-10 active:scale-95 transition-transform">
+<span class="material-icons text-3xl">add</span>
+</button>
+<nav class="h-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 flex justify-around items-center px-4 pb-4 mt-auto">
+<button class="flex flex-col items-center text-slate-400">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[9px] mt-1 font-semibold uppercase">Home</span>
+</button>
+<button class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-[9px] mt-1 font-semibold uppercase">Planner</span>
+</button>
+<button class="flex flex-col items-center text-slate-400">
+<span class="material-symbols-outlined">checklist</span>
+<span class="text-[9px] mt-1 font-semibold uppercase">Tasks</span>
+</button>
+<button class="flex flex-col items-center text-slate-400">
+<span class="material-symbols-outlined">flag</span>
+<span class="text-[9px] mt-1 font-semibold uppercase">Goals</span>
+</button>
+<button class="flex flex-col items-center text-slate-400">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-[9px] mt-1 font-semibold uppercase">Stats</span>
+</button>
+</nav>
+<div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
+</div>
+
+</body></html>
