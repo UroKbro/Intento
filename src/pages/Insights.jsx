@@ -28,8 +28,8 @@ const Insights = () => {
     ]
 
     return (
-        <div className="flex flex-col min-h-screen pb-36 bg-[#f6f7f8] dark:bg-[#101822]">
-            <header className="px-6 pb-4 pt-12 sticky top-0 bg-[#f6f7f8]/80 dark:bg-[#101822]/80 backdrop-blur-md z-30">
+        <div className="relative flex flex-col min-h-screen pb-36 bg-white dark:bg-[#0a0f16]">
+            <header className="px-6 pb-4 pt-12 sticky top-0 bg-white/80 dark:bg-[#0a0f16]/80 backdrop-blur-md z-30">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Insights</h1>
                     <button className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-blue-600">

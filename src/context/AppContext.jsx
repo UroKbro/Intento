@@ -4,9 +4,9 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const [goals, setGoals] = useState([
-        { id: 1, title: 'Finish iOS Course', milestone: 'Navigation & Routing', progress: 72, targetDate: 'Nov 20, 2024', projectedDate: 'Nov 16, 2024', color: 'emerald', status: 'active', timeTarget: 50, timeLogged: 36 },
-        { id: 2, title: 'Deep Work Mastery', milestone: 'Streak: 8 Days', progress: 45, targetDate: 'Dec 01, 2024', projectedDate: 'Dec 09, 2024', color: 'amber', status: 'active', timeTarget: 40, timeLogged: 18 },
-        { id: 3, title: 'Master Mobile UI Design', milestone: 'Prototyping Mastery', progress: 64, targetDate: 'Oct 12, 2024', projectedDate: 'Oct 10, 2024', color: 'blue', status: 'active', timeTarget: 50, timeLogged: 32.5 },
+        { id: 1, title: 'Master Mobile UI Design', milestone: 'Prototyping Mastery', progress: 64, targetDate: 'Oct 12, 2024', projectedDate: 'Oct 10, 2024', color: 'blue', status: 'active', timeTarget: 50, timeLogged: 32.5, streak: 12, habits: [{ id: 1, title: 'Morning UI Review', detail: 'After Morning Coffee → 15m Dribbble Inspo', match: '85%', color: 'orange' }, { id: 2, title: 'Daily retrospective', detail: 'Before Bed → 5m Log Learning Outcomes', match: '100%', color: 'violet' }] },
+        { id: 2, title: 'Finish iOS Course', milestone: 'Navigation & Routing', progress: 72, targetDate: 'Nov 20, 2024', projectedDate: 'Nov 16, 2024', color: 'emerald', status: 'active', timeTarget: 50, timeLogged: 36, streak: 5, habits: [] },
+        { id: 3, title: 'Deep Work Mastery', milestone: 'Streak: 8 Days', progress: 45, targetDate: 'Dec 01, 2024', projectedDate: 'Dec 09, 2024', color: 'amber', status: 'active', timeTarget: 40, timeLogged: 18, streak: 8, habits: [] },
     ]);
 
     const [tasks, setTasks] = useState([
@@ -24,6 +24,11 @@ export const AppProvider = ({ children }) => {
         { id: 4, time: '03 PM', date: 24, title: 'Client Sync', type: 'MEETING', progress: '0/1h Planned', color: 'slate' }
     ]);
 
+    const [notifications, setNotifications] = useState([
+        { id: 1, type: 'overload', message: 'Over-scheduling detected in the next 4 hours.', timestamp: new Date().toISOString(), read: false, category: 'Today' },
+        { id: 2, type: 'summary', message: 'You completed 12 focus sessions this week. Excellent!', timestamp: new Date(Date.now() - 86400000).toISOString(), read: true, category: 'Earlier' }
+    ]);
+
     const [activeSession, setActiveSession] = useState(null);
     const [timerState, setTimerState] = useState({
         isActive: false,
@@ -39,9 +44,25 @@ export const AppProvider = ({ children }) => {
     const [activeGoalId, setActiveGoalId] = useState(null);
 
     // Helper functions
-    const addGoal = (goal) => setGoals(prev => [...prev, { id: Date.now(), progress: 0, ...goal }]);
+    const addGoal = (goal) => setGoals(prev => [...prev, {
+        id: Date.now(),
+        progress: 0,
+        timeLogged: 0,
+        status: 'active',
+        milestone: 'Just started',
+        ...goal
+    }]);
     const updateGoal = (id, updates) => setGoals(prev => prev.map(g => g.id === id ? { ...g, ...updates } : g));
     const deleteGoal = (id) => setGoals(prev => prev.filter(g => g.id !== id));
+
+    const addNotification = (notif) => setNotifications(prev => [{
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        read: false,
+        ...notif
+    }, ...prev]);
+    const markAllAsRead = () => setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    const removeNotification = (id) => setNotifications(prev => prev.filter(n => n.id !== id));
 
     const addTask = (task) => setTasks(prev => [...prev, {
         id: Date.now(),
@@ -97,6 +118,7 @@ export const AppProvider = ({ children }) => {
             goals, addGoal, updateGoal, deleteGoal,
             tasks, addTask, updateTask, completeTask, archiveTask, deleteTask,
             sessions, addSession, updateSession, deleteSession,
+            notifications, addNotification, markAllAsRead, removeNotification,
             activeSession, setActiveSession,
             timerState, setTimerState,
             currentPage, setCurrentPage,

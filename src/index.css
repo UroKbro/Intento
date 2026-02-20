@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   font-family: 'Inter', sans-serif;
 }
@@ -8,6 +12,15 @@ body {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  background-color: #f1f5f9;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -15,8 +28,17 @@ body {
 }
 
 @keyframes pulse-soft {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(0.98); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
 }
 
 .burnout-pulse {

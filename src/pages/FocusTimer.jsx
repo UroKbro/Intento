@@ -60,7 +60,7 @@ const FocusTimer = () => {
     const progress = (1 - timerState.timeLeft / (25 * 60)) * 100
 
     return (
-        <div className={`flex flex-col min-h-screen transition-colors duration-700 ${isDeepMode ? 'bg-black' : 'bg-[#f6f7f8] dark:bg-[#0a0f16]'}`}>
+        <div className={`relative flex flex-col min-h-screen transition-colors duration-700 ${isDeepMode ? 'bg-black' : 'bg-white dark:bg-[#0a0f16]'}`}>
             {!isDeepMode && (
                 <header className="pt-12 px-6 flex justify-between items-center">
                     <button
@@ -111,7 +111,7 @@ const FocusTimer = () => {
                             key={timerState.timeLeft}
                             initial={{ scale: 0.95, opacity: 0.8 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            className={`text-6xl font-black font-mono tracking-tighter ${isDeepMode ? 'text-white' : 'text-slate-900 dark:text-white'}`}
+                            className={`text-6xl font-black tracking-tighter ${isDeepMode ? 'text-white' : 'text-slate-900 dark:text-white'}`}
                         >
                             {formatTime(timerState.timeLeft)}
                         </motion.span>
@@ -183,7 +183,7 @@ const FocusTimer = () => {
             {/* Quick Note Modal */}
             <AnimatePresence>
                 {showNoteModal && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
+                    <div className="absolute inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}

@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
-import { Plus, Mic, Edit3, ChevronRight, Brain, TrendingUp, Target, X, Calendar, Play, ChevronLeft } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Plus, Mic, Edit3, ChevronRight, Brain, TrendingUp, Target, X, Calendar, Play, ChevronLeft, Bell, Check, AlertCircle, Info, Star } from 'lucide-react'
 import { useState } from 'react'
 import { useApp } from '../context/AppContext'
 
@@ -8,7 +8,9 @@ const Dashboard = () => {
         goals, addGoal,
         tasks,
         sessions, updateSession,
+        notifications, markAllAsRead, removeNotification,
         setCurrentPage,
+        activeGoalId, setActiveGoalId,
         selectedTask, setSelectedTask,
         setInsightsFilter
     } = useApp()
@@ -17,11 +19,15 @@ const Dashboard = () => {
     const [showNewGoalModal, setShowNewGoalModal] = useState(false)
     const [showTaskSelector, setShowTaskSelector] = useState(false)
     const [showRescheduleModal, setShowRescheduleModal] = useState(false)
+    const [showNotifications, setShowNotifications] = useState(false)
     const [activeRescheduleSession, setActiveRescheduleSession] = useState(null)
     const [showFirstGoalTooltip, setShowFirstGoalTooltip] = useState(false)
+    const [showBreakintoTasksPrompt, setShowBreakintoTasksPrompt] = useState(false)
 
     // New Goal Form State
-    const [newGoal, setNewGoal] = useState({ title: '', desc: '', timeTarget: '', color: 'blue' })
+    const [newGoal, setNewGoal] = useState({ title: '', desc: '', timeTarget: '', color: 'blue', deadline: '', category: 'Deep Work' })
+
+    const unreadCount = notifications.filter(n => !n.read).length
 
     // Filter only active goals for the dashboard
     const activeGoals = goals.filter(g => g.status === 'active')
@@ -35,15 +41,17 @@ const Dashboard = () => {
             title: newGoal.title,
             milestone: 'Breaking ground',
             progress: 0,
-            targetDate: 'Set date',
+            targetDate: newGoal.deadline || 'Set date',
             color: newGoal.color,
             status: 'active',
             timeTarget: parseInt(newGoal.timeTarget) || 0,
             timeLogged: 0,
-            description: newGoal.desc
+            description: newGoal.desc,
+            category: newGoal.category
         })
         setShowNewGoalModal(false)
-        setNewGoal({ title: '', desc: '', timeTarget: '', color: 'blue' })
+        setShowBreakintoTasksPrompt(true)
+        setNewGoal({ title: '', desc: '', timeTarget: '', color: 'blue', deadline: '', category: 'Deep Work' })
 
         if (goals.length === 1) { // If it was the first goal (addGoal increases length)
             setShowFirstGoalTooltip(true)
@@ -95,27 +103,85 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen pb-40">
-            <header className="pt-14 px-6 pb-6 flex flex-col gap-1 z-10">
+        <div className="relative flex flex-col min-h-screen pb-40 bg-white dark:bg-[#0a0f16]">
+            <header className="pt-12 px-6 pb-6 flex flex-col gap-1 z-10">
                 <div className="flex justify-between items-center mb-2">
                     <span className="text-[11px] font-bold text-blue-600 uppercase tracking-widest">Monday, Nov 04</span>
-                    <button
-                        onClick={() => setShowNewGoalModal(true)}
-                        className="text-blue-600 font-bold text-[11px] uppercase tracking-wider relative"
-                    >
-                        New Goal
-                        {showFirstGoalTooltip && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="absolute top-8 right-0 w-32 bg-slate-900 text-white text-[10px] p-2 rounded-lg shadow-xl z-50 pointer-events-none"
-                            >
-                                <div className="absolute -top-1 right-4 w-2 h-2 bg-slate-900 rotate-45" />
-                                Break this into tasks.
-                            </motion.div>
-                        )}
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setShowNotifications(!showNotifications)}
+                            className="relative p-2 text-slate-500 dark:text-slate-400 active:scale-90 transition-transform"
+                        >
+                            <Bell size={20} />
+                            {unreadCount > 0 && (
+                                <span className="absolute top-1 right-1 w-4 h-4 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center border-2 border-white dark:border-[#0a0f16]">
+                                    {unreadCount}
+                                </span>
+                            )}
+                        </button>
+                        <button
+                            onClick={() => setShowNewGoalModal(true)}
+                            className="text-blue-600 font-bold text-[11px] uppercase tracking-wider relative"
+                        >
+                            New Goal
+                            {showFirstGoalTooltip && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="absolute top-8 right-0 w-32 bg-slate-900 text-white text-[10px] p-2 rounded-lg shadow-xl z-50 pointer-events-none"
+                                >
+                                    <div className="absolute -top-1 right-4 w-2 h-2 bg-slate-900 rotate-45" />
+                                    Break this into tasks.
+                                </motion.div>
+                            )}
+                        </button>
+                    </div>
                 </div>
+
+                <AnimatePresence>
+                    {showNotifications && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-xl overflow-hidden mb-4"
+                        >
+                            <div className="p-4 border-b border-slate-100 dark:border-slate-700/50 flex justify-between items-center">
+                                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">Notifications</h3>
+                                <button
+                                    onClick={markAllAsRead}
+                                    className="text-[10px] font-bold text-blue-600 uppercase"
+                                >
+                                    Mark all as read
+                                </button>
+                            </div>
+                            <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                                {['Today', 'Earlier'].map(category => (
+                                    <div key={category}>
+                                        <div className="bg-slate-50 dark:bg-slate-900/40 px-4 py-1.5 text-[9px] font-black uppercase text-slate-400 tracking-tighter">
+                                            {category}
+                                        </div>
+                                        {notifications.filter(n => n.category === category).map(n => (
+                                            <div key={n.id} className={`p-4 flex gap-3 border-b border-slate-50 dark:border-slate-800 last:border-none ${!n.read ? 'bg-blue-50/30 dark:bg-blue-900/10' : ''}`}>
+                                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${n.type === 'overload' ? 'bg-amber-100 text-amber-600' :
+                                                    n.type === 'summary' ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-600'}`}>
+                                                    {n.type === 'overload' ? <AlertCircle size={16} /> : <Info size={16} />}
+                                                </div>
+                                                <div className="flex-1">
+                                                    <p className="text-xs text-slate-700 dark:text-slate-300 leading-snug">{n.message}</p>
+                                                    <p className="text-[9px] text-slate-400 mt-1 uppercase font-bold">{new Date(n.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                                </div>
+                                                <button onClick={() => removeNotification(n.id)} className="text-slate-300 hover:text-slate-500 transition-colors">
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
                 <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Smart Intentional Dashboard</h1>
 
                 {!insightDismissed && (
@@ -262,7 +328,10 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                     <button
-                                        onClick={() => setCurrentPage('goal-detail')}
+                                        onClick={() => {
+                                            setActiveGoalId(goal.id)
+                                            setCurrentPage('goal-detail')
+                                        }}
                                         className="text-blue-600 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1 group"
                                     >
                                         View Goal <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
@@ -295,7 +364,7 @@ const Dashboard = () => {
             </motion.div>
 
             {/* Floating Action Button */}
-            <div className="fixed bottom-28 right-6 left-6 flex justify-end items-center pointer-events-none gap-3 z-30">
+            <div className="absolute bottom-28 right-6 left-6 flex justify-end items-center pointer-events-none gap-3 z-30">
                 <motion.div
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -323,7 +392,7 @@ const Dashboard = () => {
 
             {/* New Goal Modal */}
             {showNewGoalModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
+                <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
                     <motion.div
                         variants={modalVariants}
                         initial="hidden"
@@ -371,17 +440,27 @@ const Dashboard = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5 ml-1">Category Color</label>
-                                    <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                                        {['blue', 'emerald', 'amber', 'rose'].map(c => (
-                                            <button
-                                                key={c}
-                                                onClick={() => setNewGoal({ ...newGoal, color: c })}
-                                                className={`w-8 h-8 rounded-full border-4 transition-all ${newGoal.color === c ? 'border-white dark:border-slate-400 scale-110' : 'border-transparent opacity-60'}`}
-                                                style={{ backgroundColor: c === 'blue' ? '#2563eb' : c === 'emerald' ? '#10b981' : c === 'amber' ? '#f59e0b' : '#e11d48' }}
-                                            />
-                                        ))}
-                                    </div>
+                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5 ml-1">Deadline</label>
+                                    <input
+                                        type="date"
+                                        value={newGoal.deadline}
+                                        onChange={(e) => setNewGoal({ ...newGoal, deadline: e.target.value })}
+                                        className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5 ml-1">Category Color</label>
+                                <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
+                                    {['blue', 'emerald', 'amber', 'rose'].map(c => (
+                                        <button
+                                            key={c}
+                                            onClick={() => setNewGoal({ ...newGoal, color: c })}
+                                            className={`w-8 h-8 rounded-full border-4 transition-all ${newGoal.color === c ? 'border-white dark:border-slate-400 scale-110' : 'border-transparent opacity-60'}`}
+                                            style={{ backgroundColor: c === 'blue' ? '#2563eb' : c === 'emerald' ? '#10b981' : c === 'amber' ? '#f59e0b' : '#e11d48' }}
+                                        />
+                                    ))}
                                 </div>
                             </div>
 
@@ -389,8 +468,8 @@ const Dashboard = () => {
                                 onClick={handleCreateGoal}
                                 disabled={!newGoal.title}
                                 className={`w-full py-4 rounded-xl font-bold uppercase tracking-widest text-xs mt-4 transition-all ${newGoal.title
-                                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 hover:bg-blue-700 active:scale-[0.98]'
-                                        : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 hover:bg-blue-700 active:scale-[0.98]'
+                                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                                     }`}
                             >
                                 Create Goal
@@ -403,7 +482,7 @@ const Dashboard = () => {
             {/* Task Selector Bottom Sheet */}
             {showTaskSelector && (
                 <div
-                    className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/60 backdrop-blur-sm"
+                    className="absolute inset-0 z-50 flex items-end justify-center bg-slate-900/60 backdrop-blur-sm"
                     onClick={() => setShowTaskSelector(false)}
                 >
                     <motion.div
@@ -441,7 +520,7 @@ const Dashboard = () => {
 
             {/* Reschedule Modal */}
             {showRescheduleModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
+                <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
                     <motion.div
                         variants={modalVariants}
                         initial="hidden"
@@ -495,6 +574,43 @@ const Dashboard = () => {
                     </motion.div>
                 </div>
             )}
+            {/* Break into Tasks Prompt */}
+            <AnimatePresence>
+                {showBreakintoTasksPrompt && (
+                    <div className="absolute inset-0 z-[60] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="bg-white dark:bg-slate-900 w-full max-w-xs rounded-3xl p-8 shadow-2xl text-center"
+                        >
+                            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <Star size={32} />
+                            </div>
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Goal Created!</h2>
+                            <p className="text-sm text-slate-500 mb-8">Would you like to break this goal into smaller tasks now?</p>
+
+                            <div className="flex flex-col gap-3">
+                                <button
+                                    onClick={() => {
+                                        setShowBreakintoTasksPrompt(false)
+                                        setCurrentPage('tasks')
+                                    }}
+                                    className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-600/30 hover:bg-blue-700 active:scale-[0.98] transition-all"
+                                >
+                                    Yes, break it down
+                                </button>
+                                <button
+                                    onClick={() => setShowBreakintoTasksPrompt(false)}
+                                    className="w-full py-4 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-2xl font-bold hover:bg-slate-200 transition-all"
+                                >
+                                    Maybe later
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     )
 }

@@ -89,7 +89,7 @@ const Planner = () => {
     const monthYearString = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
     return (
-        <div className="flex flex-col min-h-screen pb-40">
+        <div className="relative flex flex-col min-h-screen pb-40 bg-white dark:bg-[#0a0f16]">
             <header className="px-6 py-4 pt-12">
                 <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center gap-2">
@@ -405,7 +405,7 @@ const SchedulingModal = ({ isOpen, onClose, editingSession, defaultTitle, select
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm p-4"
+            className="absolute inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm p-4"
             onClick={onClose}
         >
             <motion.div

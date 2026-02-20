@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard'
 import Planner from './pages/Planner'
 import Tasks from './pages/Tasks'
 import Insights from './pages/Insights'
+import GoalsOverview from './pages/GoalsOverview'
 import Goals from './pages/Goals'
 import FocusTimer from './pages/FocusTimer'
 import Reflection from './pages/Reflection'
@@ -15,7 +16,7 @@ function AppContent() {
 
     const navItems = [
         { id: 'home', icon: <LayoutGrid size={24} />, label: 'Home' },
-        { id: 'planner', icon: <Calendar size={24} />, label: 'Planner' },
+        { id: 'goals', icon: <Target size={24} />, label: 'Goals' },
         { id: 'focus', icon: <Play size={24} fill="currentColor" />, label: 'Focus', isPrimary: true },
         { id: 'tasks', icon: <ListTodo size={24} />, label: 'Tasks' },
         { id: 'insights', icon: <TrendingUp size={24} />, label: 'Insights' },
@@ -27,7 +28,7 @@ function AppContent() {
             case 'planner': return <Planner />
             case 'tasks': return <Tasks />
             case 'insights': return <Insights />
-            case 'goals': return <Insights /> // Placeholder for Goals list if separate
+            case 'goals': return <GoalsOverview />
             case 'goal-detail': return <Goals />
             case 'focus': return <FocusTimer />
             case 'reflection': return <Reflection />
@@ -40,15 +41,18 @@ function AppContent() {
     const hideNav = currentPage === 'focus' || currentPage === 'reflection'
 
     return (
-        <div className="relative w-full max-w-md bg-white dark:bg-[#0a0f16] shadow-2xl min-h-screen overflow-hidden flex flex-col">
+        <div className="relative w-full max-w-md bg-[#f6f7f8] dark:bg-[#0a0f16] shadow-2xl min-h-screen h-screen overflow-hidden flex flex-col">
             <div className="flex-grow overflow-y-auto custom-scrollbar">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentPage}
-                        initial={{ opacity: 0, x: 10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -10 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        initial={{ opacity: 0, scale: 0.98, y: 4 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 1.02, y: -4 }}
+                        transition={{
+                            duration: 0.35,
+                            ease: [0.23, 1, 0.32, 1] // Custom ease-out cubic
+                        }}
                         className="min-h-full"
                     >
                         {renderPage()}
@@ -58,7 +62,7 @@ function AppContent() {
 
             {/* Bottom Glass Navigation */}
             {!hideNav && (
-                <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[360px] h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-slate-800/50 rounded-[32px] shadow-2xl flex items-center justify-around px-2 z-50">
+                <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[360px] h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-slate-800/50 rounded-[32px] shadow-2xl flex items-center justify-around px-2 z-50">
                     {navItems.map((item) => (
                         <button
                             key={item.id}

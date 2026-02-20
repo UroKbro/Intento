@@ -1,32 +1,31 @@
-import { motion } from 'framer-motion'
-import { ChevronLeft, Share2, Flame, CheckCircle2, MoreHorizontal, History, TrendingUp, CalendarCheck, Coffee, Moon, Play, Edit2, Plus, Calendar, PauseCircle, Trash2, BarChart2 } from 'lucide-react'
-import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronLeft, Share2, Flame, CheckCircle2, MoreHorizontal, History, TrendingUp, CalendarCheck, Coffee, Moon, Play, Edit2, Plus, Calendar, PauseCircle, Trash2, BarChart2, Clock, Zap, AlertCircle, X, Check } from 'lucide-react'
+import { useState, useMemo } from 'react'
 import { useApp } from '../context/AppContext'
 
 const Goals = () => {
-    const { goals, tasks, updateGoal, deleteGoal, setCurrentPage } = useApp()
+    const { goals, tasks, updateGoal, deleteGoal, setCurrentPage, activeGoalId, addTask } = useApp()
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [showAddTaskModal, setShowAddTaskModal] = useState(false)
+    const [editedGoal, setEditedGoal] = useState(null)
+    const [newTask, setNewTask] = useState({ title: '', priority: 2, estimatedDuration: 30 })
 
-    // For now, we'll look at the first active goal as our "Detail" view
-    // In a real app, this would be based on a URL parameter or state
-    const goal = goals[2] || goals[0] // Master Mobile UI Design or Finish iOS Course
+    // Find the current goal based on activeGoalId
+    const goal = useMemo(() => goals.find(g => g.id === activeGoalId) || goals[0], [goals, activeGoalId])
 
-    const goalTasks = tasks.filter(t => t.goalName === goal.title || t.goalId === goal.id)
-    const contributions = goalTasks.map(t => ({
+    const goalTasks = useMemo(() => tasks.filter(t => t.goalName === goal.title || t.goalId === goal.id), [tasks, goal])
+    const contributions = useMemo(() => goalTasks.map(t => ({
+        id: t.id,
         title: t.title,
         time: t.logged,
         progress: t.status === 'completed' ? 100 : (t.status === 'active' ? 50 : 0),
         status: t.status
-    }))
+    })), [goalTasks])
 
     const heatmap = [
         [0, 20, 60, 0, 40, 0, 0],
         [40, 80, 100, 60, 40, 20, 0],
         [20, 40, 20, 0, 0, 0, 0],
-    ]
-
-    const habits = [
-        { title: 'Morning UI Review', detail: 'After Morning Coffee → 15m Dribbble Inspo', match: '85%', color: 'orange', icon: <Coffee size={20} /> },
-        { title: 'Daily retrospective', detail: 'Before Bed → 5m Log Learning Outcomes', match: '100%', color: 'violet', icon: <Moon size={20} /> },
     ]
 
     const handlePauseGoal = () => {
@@ -36,37 +35,64 @@ const Goals = () => {
     const handleDeleteGoal = () => {
         if (window.confirm('Are you sure you want to delete this goal?')) {
             deleteGoal(goal.id)
-            setCurrentPage('home')
+            setCurrentPage('goals')
         }
     }
 
+    const handleSaveGoal = () => {
+        updateGoal(goal.id, editedGoal)
+        setShowEditModal(false)
+    }
+
+    const handleCreateTask = () => {
+        if (!newTask.title) return
+        addTask({
+            ...newTask,
+            goalId: goal.id,
+            goalName: goal.title,
+            color: goal.color
+        })
+        setShowAddTaskModal(false)
+        setNewTask({ title: '', priority: 2, estimatedDuration: 30 })
+    }
+
+    const handleWork = () => {
+        setCurrentPage('focus')
+    }
+
     return (
-        <div className="flex flex-col min-h-screen pb-40 bg-[#f6f7f8] dark:bg-[#0a0f16]">
-            <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-5 py-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-800">
+        <div className="relative flex flex-col min-h-screen pb-40 bg-white dark:bg-[#0a0f16]">
+            <header className="sticky top-0 z-40 bg-white/80 dark:bg-[#0a0f16]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-800">
                 <button
-                    onClick={() => setCurrentPage('home')}
+                    onClick={() => setCurrentPage('goals')}
                     className="p-2 -ml-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors"
                 >
                     <ChevronLeft size={24} className="text-slate-600 dark:text-slate-300" />
                 </button>
                 <h1 className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white truncate max-w-[200px]">{goal.title}</h1>
                 <div className="flex items-center gap-1">
-                    <button className="p-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors">
+                    <button
+                        onClick={() => {
+                            setEditedGoal({ ...goal })
+                            setShowEditModal(true)
+                        }}
+                        className="p-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors"
+                    >
                         <Edit2 size={20} className="text-slate-600 dark:text-slate-300" />
                     </button>
                     <button className="p-2 -mr-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors">
-                        <MoreHorizontal size={24} className="text-slate-600 dark:text-slate-300" />
+                        <Share2 size={20} className="text-slate-600 dark:text-slate-300" />
                     </button>
                 </div>
             </header>
 
-            <main className="px-5 pt-6 space-y-8">
+            <main className="px-6 pt-6 space-y-8">
                 <section>
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2">
                             <span className="px-2.5 py-1 bg-blue-600/10 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded-full">Primary Objective</span>
                             <span className="flex items-center gap-1 text-amber-500 text-[10px] font-bold uppercase tracking-widest bg-amber-500/10 px-2.5 py-1 rounded-full">
-                                <Flame size={12} /> 12 Day Streak
+                                <Flame size={12} /> {goal.streak} Day Streak
                             </span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -108,7 +134,7 @@ const Goals = () => {
 
                     <div className="grid grid-cols-4 gap-2 mt-6">
                         <button
-                            onClick={() => { }} // Open New Task modal
+                            onClick={() => setShowAddTaskModal(true)}
                             className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-transform active:scale-95"
                         >
                             <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-full flex items-center justify-center">
@@ -117,7 +143,7 @@ const Goals = () => {
                             <span className="text-[9px] font-bold text-slate-500 uppercase">Add Task</span>
                         </button>
                         <button
-                            onClick={() => setCurrentPage('focus')}
+                            onClick={handleWork}
                             className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-transform active:scale-95"
                         >
                             <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-full flex items-center justify-center">
@@ -135,7 +161,7 @@ const Goals = () => {
                             <span className="text-[9px] font-bold text-slate-500 uppercase">Schedule</span>
                         </button>
                         <button
-                            onClick={() => { }} // Open Breakdown modal
+                            onClick={() => setCurrentPage('insights')}
                             className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-transform active:scale-95"
                         >
                             <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 text-amber-600 rounded-full flex items-center justify-center">
@@ -177,6 +203,17 @@ const Goals = () => {
                                 </div>
                             </div>
                         ))}
+                        {contributions.length === 0 && (
+                            <div className="p-8 text-center">
+                                <p className="text-sm text-slate-400">No tasks linked to this goal yet.</p>
+                                <button
+                                    onClick={() => setShowAddTaskModal(true)}
+                                    className="text-blue-600 text-xs font-bold mt-2 uppercase"
+                                >
+                                    Create First Task
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </section>
 
@@ -193,7 +230,7 @@ const Goals = () => {
                             ))}
 
                             {heatmap.map((row, rowIdx) => (
-                                <React.Fragment key={rowIdx}>
+                                <div key={rowIdx} className="contents">
                                     <div className="text-[9px] font-medium text-slate-400 self-center">{['08:00', '09:00', '10:00'][rowIdx]}</div>
                                     {row.map((val, colIdx) => (
                                         <div
@@ -206,39 +243,41 @@ const Goals = () => {
                                                 }`}
                                         />
                                     ))}
-                                </React.Fragment>
+                                </div>
                             ))}
                         </div>
                     </div>
                 </section>
 
                 <section>
-                    <h3 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Milestone Forecasting</h3>
-                    <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-indigo-500/5 border border-indigo-500/20 p-4 rounded-2xl">
-                            <div className="flex items-center gap-2 mb-2">
-                                <CalendarCheck size={18} className="text-indigo-500" />
-                                <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-tighter">Est. Completion</span>
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Linked Habit Stacks</h3>
+                        <button className="text-[10px] font-bold text-blue-600 uppercase">Edit Stacks</button>
+                    </div>
+                    <div className="space-y-3">
+                        {goal.habits?.map(habit => (
+                            <div key={habit.id} className="bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+                                <div className={`w-12 h-12 bg-${habit.color}-500/10 rounded-full flex items-center justify-center text-${habit.color}-500`}>
+                                    {habit.color === 'orange' ? <Coffee size={24} /> : (habit.color === 'violet' ? <Moon size={24} /> : <Zap size={24} />)}
+                                </div>
+                                <div className="flex-1">
+                                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">{habit.title}</h4>
+                                    <p className="text-[11px] text-slate-500">{habit.detail}</p>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <span className={`text-xs font-black text-${habit.color}-500`}>{habit.match}</span>
+                                    <span className="text-[8px] font-bold text-slate-400 uppercase">Match</span>
+                                </div>
                             </div>
-                            <div className="text-xl font-black text-slate-900 dark:text-white">{goal.projectedDate.split(',')[0]}</div>
-                            <p className="text-[9px] font-bold text-slate-500 uppercase mt-1">Based on current pace</p>
-                        </div>
-                        <div className="bg-amber-500/5 border border-amber-500/20 p-4 rounded-2xl">
-                            <div className="flex items-center gap-2 mb-2">
-                                <TrendingUp size={18} className="text-amber-500" />
-                                <span className="text-[10px] font-bold text-amber-500 uppercase tracking-tighter">Remaining</span>
-                            </div>
-                            <div className="text-xl font-black text-slate-900 dark:text-white">{goal.timeTarget - goal.timeLogged}h <span className="text-xs font-normal text-slate-400">Left</span></div>
-                            <p className="text-[9px] font-bold text-slate-500 uppercase mt-1">{goal.milestone}</p>
-                        </div>
+                        ))}
                     </div>
                 </section>
             </main>
 
-            <div className="fixed bottom-24 left-0 right-0 p-5 pointer-events-none z-30">
+            <div className="absolute bottom-24 left-0 right-0 p-5 pointer-events-none z-30">
                 <div className="max-w-md mx-auto flex items-center gap-3 pointer-events-auto">
                     <button
-                        onClick={() => setCurrentPage('focus')}
+                        onClick={handleWork}
                         className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-extrabold py-5 rounded-2xl shadow-2xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all hover:bg-slate-800 dark:hover:bg-slate-100"
                     >
                         <Play size={20} fill="currentColor" />
@@ -246,6 +285,126 @@ const Goals = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Modals */}
+            <AnimatePresence>
+                {showEditModal && editedGoal && (
+                    <div className="absolute inset-0 z-[60] flex items-end justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+                        <motion.div
+                            initial={{ y: "100%" }}
+                            animate={{ y: 0 }}
+                            exit={{ y: "100%" }}
+                            className="bg-white dark:bg-slate-900 w-full max-w-md rounded-t-[32px] p-8 shadow-2xl"
+                        >
+                            <div className="flex justify-between items-center mb-8">
+                                <h2 className="text-xl font-bold text-slate-900 dark:text-white">Edit Goal</h2>
+                                <button onClick={() => setShowEditModal(false)} className="p-2 bg-slate-100 dark:bg-slate-800 rounded-full">
+                                    <X size={20} />
+                                </button>
+                            </div>
+
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Title</label>
+                                    <input
+                                        type="text"
+                                        value={editedGoal.title}
+                                        onChange={(e) => setEditedGoal({ ...editedGoal, title: e.target.value })}
+                                        className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl p-4 text-sm font-bold focus:ring-2 focus:ring-blue-600 outline-none"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Target Hours</label>
+                                        <input
+                                            type="number"
+                                            value={editedGoal.timeTarget}
+                                            onChange={(e) => setEditedGoal({ ...editedGoal, timeTarget: parseInt(e.target.value) })}
+                                            className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl p-4 text-sm font-bold focus:ring-2 focus:ring-blue-600 outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Deadline</label>
+                                        <input
+                                            type="date"
+                                            value={editedGoal.targetDate}
+                                            onChange={(e) => setEditedGoal({ ...editedGoal, targetDate: e.target.value })}
+                                            className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl p-4 text-sm font-bold focus:ring-2 focus:ring-blue-600 outline-none"
+                                        />
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleSaveGoal}
+                                    className="w-full py-5 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-600/30 active:scale-[0.98] transition-all"
+                                >
+                                    Save Changes
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+
+                {showAddTaskModal && (
+                    <div className="absolute inset-0 z-[60] flex items-end justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+                        <motion.div
+                            initial={{ y: "100%" }}
+                            animate={{ y: 0 }}
+                            exit={{ y: "100%" }}
+                            className="bg-white dark:bg-slate-900 w-full max-w-md rounded-t-[32px] p-8 shadow-2xl"
+                        >
+                            <div className="flex justify-between items-center mb-8">
+                                <h2 className="text-xl font-bold text-slate-900 dark:text-white">Quick Add Task</h2>
+                                <button onClick={() => setShowAddTaskModal(false)} className="p-2 bg-slate-100 dark:bg-slate-800 rounded-full">
+                                    <X size={20} />
+                                </button>
+                            </div>
+
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Task Title</label>
+                                    <input
+                                        type="text"
+                                        placeholder="What needs to be done?"
+                                        value={newTask.title}
+                                        onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                                        className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl p-4 text-sm font-bold focus:ring-2 focus:ring-blue-600 outline-none"
+                                        autoFocus
+                                    />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Priority</label>
+                                        <select
+                                            value={newTask.priority}
+                                            onChange={(e) => setNewTask({ ...newTask, priority: parseInt(e.target.value) })}
+                                            className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl p-4 text-sm font-bold focus:ring-2 focus:ring-blue-600 outline-none appearance-none"
+                                        >
+                                            <option value={1}>High</option>
+                                            <option value={2}>Medium</option>
+                                            <option value={3}>Low</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Est. Minutes</label>
+                                        <input
+                                            type="number"
+                                            value={newTask.estimatedDuration}
+                                            onChange={(e) => setNewTask({ ...newTask, estimatedDuration: parseInt(e.target.value) })}
+                                            className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl p-4 text-sm font-bold focus:ring-2 focus:ring-blue-600 outline-none"
+                                        />
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleCreateTask}
+                                    className="w-full py-5 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-600/30 active:scale-[0.98] transition-all"
+                                >
+                                    Create Task
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     )
 }

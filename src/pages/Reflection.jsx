@@ -54,7 +54,7 @@ const Reflection = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen pb-12 bg-[#f6f7f8] dark:bg-[#0a0f16]">
+        <div className="relative flex flex-col min-h-screen pb-12 bg-white dark:bg-[#0a0f16]">
             <header className="pt-12 px-6 pb-6">
                 <div className="flex justify-between items-center mb-2">
                     <span className="text-[11px] font-bold text-blue-600 uppercase tracking-widest">Session Complete</span>
@@ -134,7 +134,7 @@ const Reflection = () => {
                 </section>
             </main>
 
-            <div className="px-6 py-6 sticky bottom-0 bg-[#f6f7f8]/80 dark:bg-[#0a0f16]/80 backdrop-blur-md">
+            <div className="px-6 py-6 sticky bottom-0 bg-white/100 dark:bg-[#0a0f16]/100 backdrop-blur-md">
                 <button
                     onClick={handleSave}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-2xl shadow-xl shadow-blue-600/30 flex items-center justify-center gap-3 transition-all active:scale-[0.98]"

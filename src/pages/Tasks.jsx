@@ -77,7 +77,7 @@ const Tasks = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen pb-40">
+        <div className="relative flex flex-col min-h-screen pb-40 bg-white dark:bg-[#0a0f16]">
             <header className="pt-12 px-6 pb-4">
                 <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center gap-2">
@@ -108,7 +108,7 @@ const Tasks = () => {
                 </div>
             </header>
 
-            <div className="px-6 py-2 sticky top-0 z-20 bg-[#f6f7f8]/80 dark:bg-[#0a0f16]/80 backdrop-blur-md">
+            <div className="px-6 py-2 sticky top-0 z-20 bg-white/80 dark:bg-[#0a0f16]/80 backdrop-blur-md">
                 <div className="relative group">
                     <div className="flex items-center gap-2 bg-white dark:bg-slate-800/80 p-1.5 pl-4 border border-slate-200 dark:border-slate-700/50 rounded-2xl shadow-sm focus-within:ring-2 focus-within:ring-blue-600/50 transition-all">
                         <Search size={18} className="text-slate-400 shrink-0" />
@@ -267,7 +267,7 @@ const Tasks = () => {
             </main>
 
             {/* Persistent Focus Bar */}
-            <div className="fixed bottom-24 left-6 right-6 pointer-events-none z-40">
+            <div className="absolute bottom-24 left-6 right-6 pointer-events-none z-40">
                 <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -285,7 +285,7 @@ const Tasks = () => {
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className="px-2 py-1 bg-black/20 rounded-lg text-xs font-mono">42:18</div>
+                        <div className="px-2 py-1 bg-black/20 rounded-lg text-xs font-bold">42:18</div>
                         <button className="w-9 h-9 bg-white text-blue-600 rounded-full flex items-center justify-center shadow-inner hover:bg-blue-50 transition-colors">
                             <Pause size={20} fill="currentColor" />
                         </button>
@@ -296,7 +296,7 @@ const Tasks = () => {
             {/* New Task Modal */}
             <AnimatePresence>
                 {showNewTaskModal && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
+                    <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -386,7 +386,7 @@ const Tasks = () => {
             <AnimatePresence>
                 {showSortSheet && (
                     <div
-                        className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/60 backdrop-blur-sm"
+                        className="absolute inset-0 z-50 flex items-end justify-center bg-slate-900/60 backdrop-blur-sm"
                         onClick={() => setShowSortSheet(false)}
                     >
                         <motion.div
