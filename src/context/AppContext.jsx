@@ -3,31 +3,50 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-    const [goals, setGoals] = useState([
+    // Persistence keys
+    const STORAGE_KEYS = {
+        GOALS: 'intento_goals',
+        TASKS: 'intento_tasks',
+        SESSIONS: 'intento_sessions',
+        NOTIFICATIONS: 'intento_notifications'
+    };
+
+    // Initial state helpers
+    const getInitialState = (key, defaultValue) => {
+        try {
+            const saved = localStorage.getItem(key);
+            return saved ? JSON.parse(saved) : defaultValue;
+        } catch (e) {
+            console.error(`Error loading ${key} from localStorage`, e);
+            return defaultValue;
+        }
+    };
+
+    const [goals, setGoals] = useState(() => getInitialState(STORAGE_KEYS.GOALS, [
         { id: 1, title: 'Master Mobile UI Design', milestone: 'Prototyping Mastery', progress: 64, targetDate: 'Oct 12, 2024', projectedDate: 'Oct 10, 2024', color: 'blue', status: 'active', timeTarget: 50, timeLogged: 32.5, streak: 12, habits: [{ id: 1, title: 'Morning UI Review', detail: 'After Morning Coffee → 15m Dribbble Inspo', match: '85%', color: 'orange' }, { id: 2, title: 'Daily retrospective', detail: 'Before Bed → 5m Log Learning Outcomes', match: '100%', color: 'violet' }] },
         { id: 2, title: 'Finish iOS Course', milestone: 'Navigation & Routing', progress: 72, targetDate: 'Nov 20, 2024', projectedDate: 'Nov 16, 2024', color: 'emerald', status: 'active', timeTarget: 50, timeLogged: 36, streak: 5, habits: [] },
         { id: 3, title: 'Deep Work Mastery', milestone: 'Streak: 8 Days', progress: 45, targetDate: 'Dec 01, 2024', projectedDate: 'Dec 09, 2024', color: 'amber', status: 'active', timeTarget: 40, timeLogged: 18, streak: 8, habits: [] },
-    ]);
+    ]));
 
-    const [tasks, setTasks] = useState([
+    const [tasks, setTasks] = useState(() => getInitialState(STORAGE_KEYS.TASKS, [
         { id: 1, title: 'Refine Product Roadmap', goalId: 1, goalName: 'MARKET LEADERSHIP', logged: '42m', timeSpent: 42, estimatedDuration: 60, status: 'active', priority: 1, color: 'blue', category: 'Deep Work', updatedAt: new Date().toISOString() },
         { id: 2, title: 'Prepare Q3 Stakeholder Deck', goalId: 1, goalName: 'TEAM ALIGNMENT', logged: '15m', timeSpent: 15, estimatedDuration: 45, status: 'pending', priority: 2, color: 'slate', category: 'Deep Work', updatedAt: new Date().toISOString() },
         { id: 3, title: 'Schedule Review Meeting', goalId: 1, goalName: 'TEAM ALIGNMENT', logged: '0m', timeSpent: 0, estimatedDuration: 15, status: 'locked', priority: 3, color: 'slate', dependency: 'Task 2', category: 'Deep Work', updatedAt: new Date().toISOString() },
         { id: 4, title: 'Review User Interviews', goalId: 1, goalName: 'MARKET LEADERSHIP', logged: '0m', timeSpent: 0, estimatedDuration: 90, status: 'pending', priority: 4, color: 'slate', category: 'Deep Work', updatedAt: new Date().toISOString() },
         { id: 5, title: 'Morning Meditation', goalId: null, goalName: 'HEALTH', logged: '20m', timeSpent: 20, estimatedDuration: 20, status: 'completed', priority: 5, color: 'emerald', category: 'Health', updatedAt: new Date().toISOString() },
-    ]);
+    ]));
 
-    const [sessions, setSessions] = useState([
+    const [sessions, setSessions] = useState(() => getInitialState(STORAGE_KEYS.SESSIONS, [
         { id: 1, time: '08 AM', date: 24, title: 'Morning Deep Work', completed: true, progress: '2/2h Completed', repeat: true, color: 'slate', type: 'WORK' },
         { id: 2, time: '10 AM', date: 24, title: 'Strategic Planning', completed: false, progress: '1.5/3h ACTUAL', repeat: true, active: true, color: 'blue', type: 'WORK' },
         { id: 3, time: '01 PM', date: 24, title: 'Recommended: Complex Tasks', suggestion: true, tag: 'High Energy Peak', color: 'purple', type: 'SUGGESTION' },
         { id: 4, time: '03 PM', date: 24, title: 'Client Sync', type: 'MEETING', progress: '0/1h Planned', color: 'slate' }
-    ]);
+    ]));
 
-    const [notifications, setNotifications] = useState([
+    const [notifications, setNotifications] = useState(() => getInitialState(STORAGE_KEYS.NOTIFICATIONS, [
         { id: 1, type: 'overload', message: 'Over-scheduling detected in the next 4 hours.', timestamp: new Date().toISOString(), read: false, category: 'Today' },
         { id: 2, type: 'summary', message: 'You completed 12 focus sessions this week. Excellent!', timestamp: new Date(Date.now() - 86400000).toISOString(), read: true, category: 'Earlier' }
-    ]);
+    ]));
 
     const [activeSession, setActiveSession] = useState(null);
     const [timerState, setTimerState] = useState({
@@ -35,13 +54,35 @@ export const AppProvider = ({ children }) => {
         timeLeft: 1500, // 25 minutes
         mode: 'focus', // focus, short-break, long-break
         totalFocusTime: 0,
-        distractions: 0
+        distractions: 0,
+        activeTaskId: 1, // Defaulting to the first task for now
+        notes: ''
     });
 
     const [currentPage, setCurrentPage] = useState('home');
     const [selectedTask, setSelectedTask] = useState(null);
     const [insightsFilter, setInsightsFilter] = useState('Weekly');
     const [activeGoalId, setActiveGoalId] = useState(null);
+    const [showNewGoalModal, setShowNewGoalModal] = useState(false);
+    const [newGoal, setNewGoal] = useState({ title: '', desc: '', timeTarget: '', color: 'blue', deadline: '', category: 'Deep Work' });
+    const [showBreakintoTasksPrompt, setShowBreakintoTasksPrompt] = useState(false);
+
+    // Save to localStorage effect
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEYS.GOALS, JSON.stringify(goals));
+    }, [goals]);
+
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(tasks));
+    }, [tasks]);
+
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEYS.SESSIONS, JSON.stringify(sessions));
+    }, [sessions]);
+
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(notifications));
+    }, [notifications]);
 
     // Helper functions
     const addGoal = (goal) => setGoals(prev => [...prev, {
@@ -113,6 +154,43 @@ export const AppProvider = ({ children }) => {
         });
     };
 
+    const logSession = () => {
+        const task = tasks.find(t => t.id === timerState.activeTaskId);
+        const newSession = {
+            id: Date.now(),
+            title: task ? task.title : 'Uncategorized Session',
+            note: timerState.notes || 'No notes recorded',
+            time: `${Math.floor(timerState.totalFocusTime / 60)}m`,
+            score: timerState.distractions === 0 ? 3 : (timerState.distractions < 3 ? 2 : 1),
+            icon: task?.icon || null, // Keeping it simple
+            color: task?.color || 'blue',
+            date: new Date().getDate(),
+            timestamp: new Date().toISOString(),
+            distractions: timerState.distractions,
+            duration: timerState.totalFocusTime
+        };
+
+        setSessions(prev => [newSession, ...prev]);
+
+        // Update task timeLogged if applicable
+        if (task) {
+            updateTask(task.id, {
+                timeSpent: (task.timeSpent || 0) + Math.floor(timerState.totalFocusTime / 60),
+                logged: `${(task.timeSpent || 0) + Math.floor(timerState.totalFocusTime / 60)}m`
+            });
+        }
+
+        // Reset timer state
+        setTimerState(prev => ({
+            ...prev,
+            isActive: false,
+            timeLeft: 1500,
+            totalFocusTime: 0,
+            distractions: 0,
+            notes: ''
+        }));
+    };
+
     return (
         <AppContext.Provider value={{
             goals, addGoal, updateGoal, deleteGoal,
@@ -124,7 +202,11 @@ export const AppProvider = ({ children }) => {
             currentPage, setCurrentPage,
             selectedTask, setSelectedTask,
             insightsFilter, setInsightsFilter,
-            activeGoalId, setActiveGoalId
+            activeGoalId, setActiveGoalId,
+            showNewGoalModal, setShowNewGoalModal,
+            newGoal, setNewGoal,
+            showBreakintoTasksPrompt, setShowBreakintoTasksPrompt,
+            logSession
         }}>
             {children}
         </AppContext.Provider>

@@ -3,24 +3,35 @@ import { Plus, ChevronRight, Target, ChevronLeft, MoreHorizontal, TrendingUp, Cl
 import { useApp } from '../context/AppContext'
 
 const GoalsOverview = () => {
-    const { goals, setCurrentPage, setActiveGoalId } = useApp()
+    const { goals, setCurrentPage, setActiveGoalId, setShowNewGoalModal } = useApp()
 
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
-            transition: { staggerChildren: 0.1 }
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.1
+            }
         }
     }
 
     const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 }
+        hidden: { opacity: 0, y: 15, scale: 0.98 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1]
+            }
+        }
     }
 
     return (
-        <div className="flex flex-col min-h-screen pb-40 bg-[#f6f7f8] dark:bg-[#0a0f16]">
-            <header className="pt-14 px-6 pb-6">
+        <div className="relative w-full flex flex-col min-h-screen pb-40 bg-[#f6f7f8] dark:bg-[#0a0f16]">
+            <header className="pt-12 px-6 pb-6">
                 <div className="flex justify-between items-center mb-2">
                     <button
                         onClick={() => setCurrentPage('home')}
@@ -28,7 +39,10 @@ const GoalsOverview = () => {
                     >
                         <ChevronLeft size={24} className="text-slate-600 dark:text-slate-300" />
                     </button>
-                    <button className="p-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors">
+                    <button
+                        onClick={() => setShowNewGoalModal(true)}
+                        className="p-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors"
+                    >
                         <Plus size={24} className="text-blue-600" />
                     </button>
                 </div>
@@ -46,7 +60,8 @@ const GoalsOverview = () => {
                     <motion.div
                         key={goal.id}
                         variants={itemVariants}
-                        whileHover={{ scale: 1.01 }}
+                        whileHover={{ y: -2, scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
                         onClick={() => {
                             setActiveGoalId(goal.id)
                             setCurrentPage('goal-detail')

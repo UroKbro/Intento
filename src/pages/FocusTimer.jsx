@@ -4,10 +4,13 @@ import { useState, useEffect, useRef } from 'react'
 import { useApp } from '../context/AppContext'
 
 const FocusTimer = () => {
-    const { timerState, setTimerState, setCurrentPage } = useApp()
+    const { timerState, setTimerState, setCurrentPage, tasks, logSession } = useApp()
     const [isDeepMode, setIsDeepMode] = useState(false)
     const [showNoteModal, setShowNoteModal] = useState(false)
-    const [note, setNote] = useState('')
+    const [showOptionsMenu, setShowOptionsMenu] = useState(false)
+    const [note, setNote] = useState(timerState.notes || '')
+
+    const activeTask = tasks.find(t => t.id === timerState.activeTaskId) || tasks[0]
 
     const timerRef = useRef(null)
 
@@ -53,16 +56,16 @@ const FocusTimer = () => {
     }
 
     const handleEndSession = () => {
-        setTimerState(prev => ({ ...prev, isActive: false }))
+        logSession()
         setCurrentPage('reflection')
     }
 
     const progress = (1 - timerState.timeLeft / (25 * 60)) * 100
 
     return (
-        <div className={`relative flex flex-col min-h-screen transition-colors duration-700 ${isDeepMode ? 'bg-black' : 'bg-white dark:bg-[#0a0f16]'}`}>
+        <div className={`relative w-full flex flex-col min-h-screen pb-12 transition-colors duration-700 ${isDeepMode ? 'bg-[#0a0f16]' : 'bg-[#f6f7f8] dark:bg-[#0a0f16]'}`}>
             {!isDeepMode && (
-                <header className="pt-12 px-6 flex justify-between items-center">
+                <header className="pt-12 px-6 pb-6 flex justify-between items-center">
                     <button
                         onClick={() => setCurrentPage('home')}
                         className="p-2 -ml-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors"
@@ -71,9 +74,12 @@ const FocusTimer = () => {
                     </button>
                     <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></div>
-                        <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Focusing: Refine Roadmap</span>
+                        <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Focusing: {activeTask?.title}</span>
                     </div>
-                    <button className="p-2 -mr-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors">
+                    <button
+                        onClick={() => setShowOptionsMenu(true)}
+                        className="p-2 -mr-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors"
+                    >
                         <MoreHorizontal size={24} className="text-slate-600 dark:text-slate-300" />
                     </button>
                 </header>
@@ -207,14 +213,68 @@ const FocusTimer = () => {
                                 </button>
                                 <button
                                     onClick={() => {
+                                        setTimerState(prev => ({ ...prev, notes: note }))
                                         setShowNoteModal(false)
-                                        setNote('')
                                     }}
                                     className="flex-1 py-3 text-xs font-bold uppercase tracking-widest text-white bg-blue-600 rounded-xl"
                                 >
                                     Save Note
                                 </button>
                             </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+            {/* More Options Modal */}
+            <AnimatePresence>
+                {showOptionsMenu && (
+                    <div className="absolute inset-0 z-[110] flex items-end justify-center bg-black/40 backdrop-blur-sm">
+                        <motion.div
+                            initial={{ y: "100%" }}
+                            animate={{ y: 0 }}
+                            exit={{ y: "100%" }}
+                            className="bg-white dark:bg-slate-900 w-full max-w-md rounded-t-[32px] p-8 pb-12 shadow-2xl"
+                        >
+                            <div className="w-12 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full mx-auto mb-8"></div>
+                            <h3 className="text-xl font-bold mb-6 text-slate-800 dark:text-white">Session Options</h3>
+                            <div className="space-y-3">
+                                <button
+                                    onClick={() => {
+                                        setTimerState(prev => ({ ...prev, timeLeft: 1500, isActive: false }))
+                                        setShowOptionsMenu(false)
+                                    }}
+                                    className="w-full py-4 px-6 bg-slate-50 dark:bg-slate-800 rounded-2xl text-left flex items-center gap-4 group"
+                                >
+                                    <div className="p-2 bg-blue-100 dark:bg-blue-900 text-blue-600 rounded-xl">
+                                        <Square size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-sm">Restart Session</p>
+                                        <p className="text-xs text-slate-500">Reset the timer to 25:00</p>
+                                    </div>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setIsDeepMode(!isDeepMode)
+                                        setShowOptionsMenu(false)
+                                    }}
+                                    className="w-full py-4 px-6 bg-slate-50 dark:bg-slate-800 rounded-2xl text-left flex items-center gap-4"
+                                >
+                                    <div className="p-2 bg-purple-100 dark:bg-purple-900 text-purple-600 rounded-xl">
+                                        <Shield size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-sm">{isDeepMode ? 'Disable' : 'Enable'} Deep Mode</p>
+                                        <p className="text-xs text-slate-500">Full screen minimalist focus</p>
+                                    </div>
+                                </button>
+                            </div>
+                            <button
+                                onClick={() => setShowOptionsMenu(false)}
+                                className="w-full mt-8 py-4 text-xs font-bold uppercase tracking-widest text-slate-500"
+                            >
+                                Close
+                            </button>
                         </motion.div>
                     </div>
                 )}

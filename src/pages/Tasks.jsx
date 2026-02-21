@@ -4,6 +4,29 @@ import { useState, useMemo } from 'react'
 import { useApp } from '../context/AppContext'
 
 const Tasks = () => {
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.05
+            }
+        }
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, x: -10 },
+        visible: {
+            opacity: 1,
+            x: 0,
+            transition: {
+                type: "spring",
+                stiffness: 300,
+                damping: 24
+            }
+        }
+    }
+
     const { tasks, goals, addTask, updateTask, completeTask, archiveTask, setCurrentPage, setSelectedTask } = useApp()
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedGoalFilter, setSelectedGoalFilter] = useState('All')
@@ -12,7 +35,7 @@ const Tasks = () => {
     const [showSortSheet, setShowSortSheet] = useState(false)
     const [newTask, setNewTask] = useState({ title: '', goalId: '', priority: 1, estimatedDuration: 30, category: 'Deep Work' })
 
-    const tabs = ['Deep Work', 'Health', 'Personal', 'Archived']
+    const tabs = ['Deep Work', 'Health', 'Personal', 'Inbox', 'Archived']
     const [activeTab, setActiveTab] = useState('Deep Work')
 
     const filteredTasks = useMemo(() => {
@@ -77,7 +100,7 @@ const Tasks = () => {
     }
 
     return (
-        <div className="relative flex flex-col min-h-screen pb-40 bg-white dark:bg-[#0a0f16]">
+        <div className="relative w-full flex flex-col min-h-screen pb-40 bg-[#f6f7f8] dark:bg-[#0a0f16]">
             <header className="pt-12 px-6 pb-4">
                 <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center gap-2">
@@ -143,7 +166,7 @@ const Tasks = () => {
                                 : 'bg-slate-100 dark:bg-slate-800 border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
                                 }`}
                         >
-                            <span className={`w-1.5 h-1.5 rounded-full ${tab === 'Deep Work' ? 'bg-blue-600' : tab === 'Health' ? 'bg-emerald-500' : 'bg-purple-500'
+                            <span className={`w-1.5 h-1.5 rounded-full ${tab === 'Deep Work' ? 'bg-blue-600' : tab === 'Health' ? 'bg-emerald-500' : tab === 'Personal' ? 'bg-purple-500' : 'bg-slate-400'
                                 }`}></span>
                             {tab}
                         </button>
@@ -170,16 +193,20 @@ const Tasks = () => {
                         <h2 className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.1em]">Sequence • Priority Flow</h2>
                     </div>
 
-                    <div className="space-y-3">
+                    <motion.div
+                        className="space-y-3"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
                         <AnimatePresence initial={false}>
                             {filteredTasks.filter(t => t.status !== 'completed').map((task) => (
                                 <motion.div
                                     key={task.id}
                                     layout
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
-                                    whileHover={{ x: 2 }}
+                                    variants={itemVariants}
+                                    whileHover={{ x: 4, scale: 1.005 }}
+                                    whileTap={{ scale: 0.995 }}
                                     className={`relative flex items-center gap-4 p-4 rounded-2xl border transition-all ${task.status === 'locked'
                                         ? 'bg-slate-50 dark:bg-slate-800/20 border-dashed border-slate-200 dark:border-slate-800 opacity-60'
                                         : 'bg-white dark:bg-slate-800/40 border-slate-200 dark:border-slate-800/60 shadow-sm'
@@ -234,7 +261,7 @@ const Tasks = () => {
                                 </motion.div>
                             ))}
                         </AnimatePresence>
-                    </div>
+                    </motion.div>
                 </section>
 
                 <section className="mb-8">

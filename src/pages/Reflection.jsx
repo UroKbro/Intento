@@ -54,7 +54,7 @@ const Reflection = () => {
     }
 
     return (
-        <div className="relative flex flex-col min-h-screen pb-12 bg-white dark:bg-[#0a0f16]">
+        <div className="relative w-full flex flex-col min-h-screen pb-12 bg-[#f6f7f8] dark:bg-[#0a0f16]">
             <header className="pt-12 px-6 pb-6">
                 <div className="flex justify-between items-center mb-2">
                     <span className="text-[11px] font-bold text-blue-600 uppercase tracking-widest">Session Complete</span>

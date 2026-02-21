@@ -4,11 +4,35 @@ import { useState, useMemo } from 'react'
 import { useApp } from '../context/AppContext'
 
 const Goals = () => {
-    const { goals, tasks, updateGoal, deleteGoal, setCurrentPage, activeGoalId, addTask } = useApp()
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.1
+            }
+        }
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 15, scale: 0.98 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1]
+            }
+        }
+    }
+
+    const { goals, tasks, updateGoal, deleteGoal, setCurrentPage, activeGoalId, addTask, setTimerState } = useApp()
     const [showEditModal, setShowEditModal] = useState(false)
     const [showAddTaskModal, setShowAddTaskModal] = useState(false)
     const [editedGoal, setEditedGoal] = useState(null)
-    const [newTask, setNewTask] = useState({ title: '', priority: 2, estimatedDuration: 30 })
+    const [newTask, setNewTask] = useState({ title: '', priority: 2, estimatedDuration: 30, category: 'Deep Work' })
 
     // Find the current goal based on activeGoalId
     const goal = useMemo(() => goals.find(g => g.id === activeGoalId) || goals[0], [goals, activeGoalId])
@@ -39,6 +63,21 @@ const Goals = () => {
         }
     }
 
+    const handleShareGoal = () => {
+        const shareData = {
+            title: `Check out my progress on ${goal.title}`,
+            text: `I've reached ${goal.progress}% progress on my goal: ${goal.title}!`,
+            url: window.location.href
+        }
+
+        if (navigator.share) {
+            navigator.share(shareData).catch(console.error)
+        } else {
+            navigator.clipboard.writeText(window.location.href)
+            alert('Goal link copied to clipboard!')
+        }
+    }
+
     const handleSaveGoal = () => {
         updateGoal(goal.id, editedGoal)
         setShowEditModal(false)
@@ -53,16 +92,27 @@ const Goals = () => {
             color: goal.color
         })
         setShowAddTaskModal(false)
-        setNewTask({ title: '', priority: 2, estimatedDuration: 30 })
+        setNewTask({ title: '', priority: 2, estimatedDuration: 30, category: 'Deep Work' })
     }
 
     const handleWork = () => {
+        // Find the first active or pending task for this goal
+        const targetTask = goalTasks.find(t => t.status === 'active') || goalTasks.find(t => t.status === 'pending')
+
+        if (targetTask) {
+            setTimerState(prev => ({ ...prev, activeTaskId: targetTask.id }))
+        }
+        setCurrentPage('focus')
+    }
+
+    const handleTaskClick = (taskId) => {
+        setTimerState(prev => ({ ...prev, activeTaskId: taskId }))
         setCurrentPage('focus')
     }
 
     return (
-        <div className="relative flex flex-col min-h-screen pb-40 bg-white dark:bg-[#0a0f16]">
-            <header className="sticky top-0 z-40 bg-white/80 dark:bg-[#0a0f16]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-800">
+        <div className="relative w-full flex flex-col min-h-screen pb-40 bg-[#f6f7f8] dark:bg-[#0a0f16]">
+            <header className="pt-12 px-6 pb-6 flex items-center justify-between z-10">
                 <button
                     onClick={() => setCurrentPage('goals')}
                     className="p-2 -ml-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors"
@@ -80,7 +130,10 @@ const Goals = () => {
                     >
                         <Edit2 size={20} className="text-slate-600 dark:text-slate-300" />
                     </button>
-                    <button className="p-2 -mr-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors">
+                    <button
+                        onClick={handleShareGoal}
+                        className="p-2 -mr-2 rounded-full active:bg-slate-200 dark:active:bg-slate-800 transition-colors"
+                    >
                         <Share2 size={20} className="text-slate-600 dark:text-slate-300" />
                     </button>
                 </div>
@@ -133,42 +186,62 @@ const Goals = () => {
                     </div>
 
                     <div className="grid grid-cols-4 gap-2 mt-6">
-                        <button
+                        <motion.button
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => setShowAddTaskModal(true)}
-                            className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-transform active:scale-95"
+                            className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all"
                         >
                             <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-full flex items-center justify-center">
                                 <Plus size={20} />
                             </div>
                             <span className="text-[9px] font-bold text-slate-500 uppercase">Add Task</span>
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={handleWork}
-                            className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-transform active:scale-95"
+                            className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all"
                         >
                             <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-full flex items-center justify-center">
                                 <Play size={20} fill="currentColor" />
                             </div>
                             <span className="text-[9px] font-bold text-slate-500 uppercase">Work</span>
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => setCurrentPage('planner')}
-                            className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-transform active:scale-95"
+                            className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all"
                         >
                             <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-full flex items-center justify-center">
                                 <Calendar size={20} />
                             </div>
                             <span className="text-[9px] font-bold text-slate-500 uppercase">Schedule</span>
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => setCurrentPage('insights')}
-                            className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-transform active:scale-95"
+                            className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all"
                         >
                             <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 text-amber-600 rounded-full flex items-center justify-center">
                                 <BarChart2 size={20} />
                             </div>
                             <span className="text-[9px] font-bold text-slate-500 uppercase">Stats</span>
-                        </button>
+                        </motion.button>
                     </div>
                 </section>
 
@@ -177,9 +250,20 @@ const Goals = () => {
                         <h3 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Task Contribution</h3>
                         <span className="text-[10px] text-slate-400 font-medium">{goalTasks.length} Tasks Logged</span>
                     </div>
-                    <div className="bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
+                    <motion.div
+                        className="bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden divide-y divide-slate-100 dark:divide-slate-800"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
                         {contributions.map((task, idx) => (
-                            <div key={idx} className={`p-4 flex items-center gap-4 ${task.status === 'active' ? 'bg-blue-600/5' : ''}`}>
+                            <motion.div
+                                key={idx}
+                                variants={itemVariants}
+                                whileHover={{ backgroundColor: "rgba(37, 99, 235, 0.05)" }}
+                                onClick={() => handleTaskClick(task.id)}
+                                className={`p-4 flex items-center gap-4 cursor-pointer ${task.status === 'active' ? 'bg-blue-600/5' : ''}`}
+                            >
                                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${task.status === 'completed' ? 'bg-emerald-500/10 text-emerald-500' :
                                     task.status === 'active' ? 'bg-blue-600/10 text-blue-600' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
                                     }`}>
@@ -201,7 +285,7 @@ const Goals = () => {
                                         />
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                         {contributions.length === 0 && (
                             <div className="p-8 text-center">
@@ -214,7 +298,7 @@ const Goals = () => {
                                 </button>
                             </div>
                         )}
-                    </div>
+                    </motion.div>
                 </section>
 
                 <section>
@@ -254,9 +338,19 @@ const Goals = () => {
                         <h3 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Linked Habit Stacks</h3>
                         <button className="text-[10px] font-bold text-blue-600 uppercase">Edit Stacks</button>
                     </div>
-                    <div className="space-y-3">
+                    <motion.div
+                        className="space-y-3"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
                         {goal.habits?.map(habit => (
-                            <div key={habit.id} className="bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+                            <motion.div
+                                key={habit.id}
+                                variants={itemVariants}
+                                whileHover={{ scale: 1.02 }}
+                                className="bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center gap-4"
+                            >
                                 <div className={`w-12 h-12 bg-${habit.color}-500/10 rounded-full flex items-center justify-center text-${habit.color}-500`}>
                                     {habit.color === 'orange' ? <Coffee size={24} /> : (habit.color === 'violet' ? <Moon size={24} /> : <Zap size={24} />)}
                                 </div>
@@ -268,14 +362,14 @@ const Goals = () => {
                                     <span className={`text-xs font-black text-${habit.color}-500`}>{habit.match}</span>
                                     <span className="text-[8px] font-bold text-slate-400 uppercase">Match</span>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 </section>
             </main>
 
-            <div className="absolute bottom-24 left-0 right-0 p-5 pointer-events-none z-30">
-                <div className="max-w-md mx-auto flex items-center gap-3 pointer-events-auto">
+            <div className="absolute bottom-24 left-6 right-6 pointer-events-none z-30">
+                <div className="w-full flex items-center gap-3 pointer-events-auto">
                     <button
                         onClick={handleWork}
                         className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-extrabold py-5 rounded-2xl shadow-2xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all hover:bg-slate-800 dark:hover:bg-slate-100"
@@ -385,7 +479,19 @@ const Goals = () => {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Est. Minutes</label>
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5 ml-1">Category</label>
+                                        <select
+                                            value={newTask.category}
+                                            onChange={(e) => setNewTask({ ...newTask, category: e.target.value })}
+                                            className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl p-4 text-sm font-bold focus:ring-2 focus:ring-blue-600 outline-none appearance-none"
+                                        >
+                                            {['Deep Work', 'Health', 'Personal', 'Inbox'].map(cat => (
+                                                <option key={cat} value={cat}>{cat}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5 ml-1">Est. Minutes</label>
                                         <input
                                             type="number"
                                             value={newTask.estimatedDuration}

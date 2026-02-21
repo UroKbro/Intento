@@ -30,8 +30,8 @@ const Settings = () => {
     ]
 
     return (
-        <div className="flex flex-col min-h-screen pb-40 bg-[#f6f7f8] dark:bg-[#0a0f16]">
-            <header className="pt-14 px-6 pb-6">
+        <div className="relative w-full flex flex-col min-h-screen pb-40 bg-[#f6f7f8] dark:bg-[#0a0f16]">
+            <header className="px-6 py-6 pt-12">
                 <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Settings</h1>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage your intentional workspace.</p>
             </header>
